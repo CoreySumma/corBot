@@ -1,0 +1,60 @@
+/* ChatBox Container */
+#chatContainer {
+  width: 400px;
+  height: 500px;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  position: relative;
+  margin: 50px auto;
+  background-color: #fff;
+  box-shadow: 0px 14px 28px rgba(0, 0, 0, 0.25), 0px 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+/* Chat Messages Area */
+#chatBox {
+  height: 80%;
+  overflow-y: scroll;
+  padding: 10px;
+  color: black;
+}
+
+/* Input Form */
+#formEl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f4f4f4;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Text Input */
+#userInput {
+  width: 70%;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #E0E0E0;
+  background-color: #fff;
+  color: black;
+  border-radius: 5px;
+}
+
+/* Send Button */
+#formEl button {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#formEl button:hover {
+  background-color: #0056b3;
+}
