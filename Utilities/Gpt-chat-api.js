@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import axios from "axios";
 
-export default async function GptApi(
+export default async function gptChatApi(
   serverSideChatHistory,
   setServerSideChatHistory
 ) {
+  const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
   try {
     let response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
@@ -14,16 +14,16 @@ export default async function GptApi(
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_OPEN_AI_KEY}`,
+          Authorization: `Bearer ${gptApiKey}`,
           "Content-Type": "application/json",
         },
       }
     );
     setServerSideChatHistory([
       ...serverSideChatHistory,
-      response.data.choices[0],
+      response.data.choices[0].message,
     ]);
-    return response.data.choices[0].text;
+    return response.data.choices[0].message;
   } catch (error) {
     console.log("Error calling chat GPT --->", error);
   }
