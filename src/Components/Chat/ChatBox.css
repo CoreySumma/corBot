@@ -2,8 +2,8 @@
 #chatContainer {
   width: 400px;
   height: 500px;
-  border: 1px solid #E0E0E0;
-  border-radius: 10px;
+  /* border: 1px solid #E0E0E0; */
+  border-radius: 8px;
   position: relative;
   margin: 50px auto;
   background-color: #fff;
@@ -31,7 +31,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 8px 8px;
 }
 
 /* Text Input */
@@ -43,6 +43,7 @@
   background-color: #fff;
   color: black;
   border-radius: 5px;
+  font-size: 16px;
 }
 
 /* Send Button */
@@ -72,7 +73,7 @@
   color: white; /* White text */
   padding: 8px 12px;
   border-radius: 12px;
-  margin: 5px 0;
+  margin: 1vmin 0;
   width: fit-content;
   display: block;
   max-width: 70%;
@@ -87,12 +88,34 @@
   color: black; /* Black text */
   padding: 8px 12px;
   border-radius: 12px;
-  margin: 5px 0;
+  margin: 1vmin 0;
   width: fit-content;
   display: block;
   max-width: 70%;
   word-wrap: break-word;
   align-self: flex-start; /* Align to left */
   text-align: left;
+}
+
+/* Styling the scrollbar track (the part the thumb slides along) */
+#chatBox::-webkit-scrollbar-track {
+  border-radius: 15px; /* Match with container border-radius */
+  background-color: #f1f1f1; /* Light grey track */
+}
+
+/* Styling the scrollbar thumb (the draggable element) */
+#chatBox::-webkit-scrollbar-thumb {
+  background-color: #888; /* Darker grey thumb */
+  border-radius: 15px; /* Rounded corners on the thumb */
+}
+
+/* Styling the scrollbar thumb on hover */
+#chatBox::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Even darker grey on hover */
+}
+
+/* Styling the scrollbar itself (width, etc.) */
+#chatBox::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
 }
 
