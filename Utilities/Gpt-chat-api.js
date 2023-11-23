@@ -7,6 +7,7 @@ export default async function gptChatApi(
   setClientSideChatHistory
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
+  console.log("calling GPT....");
   try {
     let response = await axios.post(
       "https://api.openai.com/v1/chat/completions",

@@ -10,7 +10,7 @@ export default function ChatBox({
 }) {
   const [inputMessage, setInputMessage] = useState("");
 
-// Helper function to handle server side chat history with user messages and call GPT after adding it
+  // Helper function to handle server side chat history with user messages and call GPT after adding it
   const addMessageToServerSideChatHistory = (message) => {
     const updatedServerSideChatHistory = [
       ...serverSideChatHistory,
@@ -37,7 +37,7 @@ export default function ChatBox({
     addMessageToServerSideChatHistory(inputMessage);
     setInputMessage("");
   };
-
+  // Logs triggered by changes in front and back end chat history
   useEffect(() => {
     console.log("Client-side chat history updated:", clientSideChatHistory);
   }, [clientSideChatHistory]);
@@ -45,6 +45,12 @@ export default function ChatBox({
   useEffect(() => {
     console.log("Server-side chat history updated:", serverSideChatHistory);
   }, [serverSideChatHistory]);
+
+  // Scroll to the bottom of the chat box
+  useEffect(() => {
+    const chatBox = document.getElementById("chatBox");
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }, [clientSideChatHistory, serverSideChatHistory]);
 
   return (
     <div id="chatContainer">
