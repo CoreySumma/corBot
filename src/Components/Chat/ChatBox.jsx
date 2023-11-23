@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import gptChatApi from "../../../Utilities/Gpt-chat-api";
+import parse from "html-react-parser";
 
 export default function ChatBox({
   serverSideChatHistory,
@@ -66,7 +67,7 @@ export default function ChatBox({
               message.role === "user" ? "user-message" : "assistant-message"
             }
           >
-            {message.content}
+            {parse(message.content)}
           </div>
         ))}
       </div>
