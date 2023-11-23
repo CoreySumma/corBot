@@ -2,7 +2,9 @@ import axios from "axios";
 
 export default async function gptChatApi(
   serverSideChatHistory,
-  setServerSideChatHistory
+  setServerSideChatHistory,
+  clientSideChatHistory,
+  setClientSideChatHistory
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
   try {
@@ -19,11 +21,15 @@ export default async function gptChatApi(
         },
       }
     );
-    setServerSideChatHistory([
-      ...serverSideChatHistory,
+    setServerSideChatHistory((prevHistory) => [
+      ...prevHistory,
       response.data.choices[0].message,
     ]);
-    return response.data.choices[0].message;
+    setClientSideChatHistory((prevHistory) => [
+      ...prevHistory,
+      response.data.choices[0].message.content,
+    ]);
+    return response.data.choices[0].message.content;
   } catch (error) {
     console.log("Error calling chat GPT --->", error);
   }

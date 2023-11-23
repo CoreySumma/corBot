@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ChatBox.css";
 import gptChatApi from "../../../Utilities/Gpt-chat-api";
 
@@ -10,31 +10,41 @@ export default function ChatBox({
 }) {
   const [inputMessage, setInputMessage] = useState("");
 
-  // Function for adding messages to server side chat history
-  // Otherwise add it to the server side chat history with this format {"role": "user", "content": "message"}
+// Helper function to handle server side chat history with user messages and call GPT after adding it
   const addMessageToServerSideChatHistory = (message) => {
-    setServerSideChatHistory([
+    const updatedServerSideChatHistory = [
       ...serverSideChatHistory,
       { role: "user", content: message },
-    ]);
-    console.log("Sending to GPT API:", JSON.stringify(serverSideChatHistory, null, 2));
-    // Call the GPT chat API to get the response - The function already adds it to server side history
-    gptChatApi(serverSideChatHistory, setServerSideChatHistory)
+    ];
+    setServerSideChatHistory(updatedServerSideChatHistory);
+
+    // Call GPT chat API with the updated chat history
+    gptChatApi(
+      updatedServerSideChatHistory,
+      setServerSideChatHistory,
+      clientSideChatHistory,
+      setClientSideChatHistory
+    );
   };
 
-  // Event handler for sending a message attached to the form and displaying it to user - client side
-  // and to add it to the server side chat history
-  // If the message is empty or only contains spaces, do nothing
-  // Otherwise, add the message to the messages array and clear the input
-  const addMessage = (e) => {
+  const handleUserMessage = (e) => {
     e.preventDefault();
+    // If it's blank, don't do anything
     if (inputMessage.trim() === "") return;
-    // Set client side chat history to include the input message on front-end
+    //  Add the user message to the client-side chat history
     setClientSideChatHistory([...clientSideChatHistory, inputMessage]);
-    // Add the message to the server side chat history
+    // Add the user message to the server-side chat history
     addMessageToServerSideChatHistory(inputMessage);
     setInputMessage("");
   };
+
+  useEffect(() => {
+    console.log("Client-side chat history updated:", clientSideChatHistory);
+  }, [clientSideChatHistory]);
+
+  useEffect(() => {
+    console.log("Server-side chat history updated:", serverSideChatHistory);
+  }, [serverSideChatHistory]);
 
   return (
     <div id="chatContainer">
@@ -43,7 +53,7 @@ export default function ChatBox({
           <p key={index}>{message}</p>
         ))}
       </div>
-      <form id="formEl" onSubmit={addMessage}>
+      <form id="formEl" onSubmit={handleUserMessage}>
         <input
           type="text"
           id="userInput"
