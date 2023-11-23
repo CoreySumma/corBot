@@ -66,3 +66,33 @@
   background-color: rgb(50, 50, 50);
   color: white;
 }
+
+.user-message {
+  background-color: #007bff; /* Blue background for user messages */
+  color: white; /* White text */
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 5px 0;
+  width: fit-content;
+  display: block;
+  max-width: 70%;
+  word-wrap: break-word;
+  align-self: flex-end; /* Align to right */
+  margin-left: auto; /* Pushes the message to the right */
+  text-align: left;
+}
+
+.assistant-message {
+  background-color: #e9ecef; /* Light grey for assistant */
+  color: black; /* Black text */
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 5px 0;
+  width: fit-content;
+  display: block;
+  max-width: 70%;
+  word-wrap: break-word;
+  align-self: flex-start; /* Align to left */
+  text-align: left;
+}
+

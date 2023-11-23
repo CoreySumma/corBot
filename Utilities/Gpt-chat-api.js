@@ -28,7 +28,7 @@ export default async function gptChatApi(
     ]);
     setClientSideChatHistory((prevHistory) => [
       ...prevHistory,
-      response.data.choices[0].message.content,
+      response.data.choices[0].message,
     ]);
     return response.data.choices[0].message.content;
   } catch (error) {

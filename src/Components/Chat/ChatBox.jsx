@@ -32,7 +32,11 @@ export default function ChatBox({
     // If it's blank, don't do anything
     if (inputMessage.trim() === "") return;
     //  Add the user message to the client-side chat history
-    setClientSideChatHistory([...clientSideChatHistory, inputMessage]);
+    // setClientSideChatHistory([...clientSideChatHistory, inputMessage]);
+    setClientSideChatHistory([
+      ...clientSideChatHistory,
+      { role: "user", content: inputMessage },
+    ]);
     // Add the user message to the server-side chat history
     addMessageToServerSideChatHistory(inputMessage);
     setInputMessage("");
@@ -56,9 +60,17 @@ export default function ChatBox({
     <div id="chatContainer">
       <div id="chatBox">
         {clientSideChatHistory.map((message, index) => (
-          <p key={index}>{message}</p>
+          <div
+            key={index}
+            className={
+              message.role === "user" ? "user-message" : "assistant-message"
+            }
+          >
+            {message.content}
+          </div>
         ))}
       </div>
+
       <form id="formEl" onSubmit={handleUserMessage}>
         <input
           type="text"
