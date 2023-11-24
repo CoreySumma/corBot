@@ -33,7 +33,6 @@ export default function ChatBox({
     // If it's blank, don't do anything
     if (inputMessage.trim() === "") return;
     //  Add the user message to the client-side chat history
-    // setClientSideChatHistory([...clientSideChatHistory, inputMessage]);
     setClientSideChatHistory([
       ...clientSideChatHistory,
       { role: "user", content: inputMessage },
