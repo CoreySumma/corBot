@@ -1,4 +1,5 @@
 import axios from "axios";
+import ttsApi from "./Text-to-speech-api";
 
 export default async function gptChatApi(
   serverSideChatHistory,
@@ -30,6 +31,7 @@ export default async function gptChatApi(
       ...prevHistory,
       response.data.choices[0].message,
     ]);
+    ttsApi(response.data.choices[0].message.content);
     return response.data.choices[0].message.content;
   } catch (error) {
     console.log("Error calling chat GPT --->", error);

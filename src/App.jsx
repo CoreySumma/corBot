@@ -7,7 +7,7 @@ export default function App() {
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
     content:
-      "Hi There! My Name is Corey and I am a Software Engineer based in Austin. Feel free to ask me anything :)",
+      "Hi There! My Name is Corey and I am a Software Engineer based in Austin. Feel free to ask me anything 😊",
     role: "assistant",
   };
   // Backend chat history that includes the prompt
