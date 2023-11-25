@@ -23,6 +23,7 @@ export default async function gptChatApi(
         },
       }
     );
+    console.log(serverSideChatHistory)
     setServerSideChatHistory((prevHistory) => [
       ...prevHistory,
       response.data.choices[0].message,
@@ -34,6 +35,6 @@ export default async function gptChatApi(
     ttsApi(response.data.choices[0].message.content);
     return response.data.choices[0].message.content;
   } catch (error) {
-    console.log("Error calling chat GPT --->", error);
+    console.error("API Error:", error.response?.data || error.message);
   }
 }

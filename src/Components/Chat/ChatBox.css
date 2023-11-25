@@ -1,4 +1,4 @@
-/* ChatBox Container */
+/* ChatBox Container - I hid it for full automation with voice recordings */
 #chatContainer {
   width: 400px;
   height: 500px;
@@ -8,6 +8,7 @@
   margin: 50px auto;
   background-color: #fff;
   box-shadow: 0px 14px 28px rgba(0, 0, 0, 0.25), 0px 10px 10px rgba(0, 0, 0, 0.22);
+  display: none;
 }
 
 /* Chat Messages Area */

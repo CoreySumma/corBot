@@ -27,7 +27,12 @@ export default function App() {
         clientSideChatHistory={clientSideChatHistory}
         setClientSideChatHistory={setClientSideChatHistory}
       />
-      <RecordButton />
+      <RecordButton 
+        serverSideChatHistory={serverSideChatHistory}
+        setServerSideChatHistory={setServerSideChatHistory}
+        clientSideChatHistory={clientSideChatHistory}
+        setClientSideChatHistory={setClientSideChatHistory}
+      />
     </>
   );
 }
