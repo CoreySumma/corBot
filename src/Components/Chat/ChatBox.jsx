@@ -24,7 +24,7 @@ export default function ChatBox({
       updatedServerSideChatHistory,
       setServerSideChatHistory,
       clientSideChatHistory,
-      setClientSideChatHistory
+      setClientSideChatHistory,
     );
   };
 

@@ -1,5 +1,6 @@
 import "./App.css";
 import ChatBox from "./Components/Chat/ChatBox";
+import RecordButton from "./Components/RecordButton/RecordButton";
 import gptChatPrompt from "../Utilities/Gpt-chat-prompt";
 import React, { useState } from "react";
 
@@ -26,6 +27,7 @@ export default function App() {
         clientSideChatHistory={clientSideChatHistory}
         setClientSideChatHistory={setClientSideChatHistory}
       />
+      <RecordButton />
     </>
   );
 }
