@@ -3,9 +3,14 @@ import ChatBox from "./Components/Chat/ChatBox";
 import RecordButton from "./Components/RecordButton/RecordButton";
 import gptChatPrompt from "../Utilities/Gpt-chat-prompt";
 import gptChatApi from "../Utilities/Gpt-chat-api";
+import checkScreenSize from "../Utilities/Check-screen-size";
 import React, { useState, useEffect } from "react";
+import MobileVersion from "./Components/MobileVersion/MobileVersion";
 
 export default function App() {
+  // Check if user is on mobile or desktop
+  const [width, setWidth] = useState(checkScreenSize());
+  console.log(width);
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
     content:
@@ -22,7 +27,10 @@ export default function App() {
 
   useEffect(() => {
     // Check if the last message was from the user
-    if (serverSideChatHistory.length > 0 && serverSideChatHistory[serverSideChatHistory.length - 1].role === 'user') {
+    if (
+      serverSideChatHistory.length > 0 &&
+      serverSideChatHistory[serverSideChatHistory.length - 1].role === "user"
+    ) {
       gptChatApi(
         serverSideChatHistory,
         setServerSideChatHistory,
@@ -33,19 +41,30 @@ export default function App() {
   }, [serverSideChatHistory]);
   return (
     <>
-      <h1>CorBot 1.0</h1>
-      <ChatBox
+      <h1>CorBot 2.0</h1>
+      {width > 600 ? (
+        <>
+          <ChatBox
+            serverSideChatHistory={serverSideChatHistory}
+            setServerSideChatHistory={setServerSideChatHistory}
+            clientSideChatHistory={clientSideChatHistory}
+            setClientSideChatHistory={setClientSideChatHistory}
+          />
+          <RecordButton
+            serverSideChatHistory={serverSideChatHistory}
+            setServerSideChatHistory={setServerSideChatHistory}
+            clientSideChatHistory={clientSideChatHistory}
+            setClientSideChatHistory={setClientSideChatHistory}
+          />
+        </>
+      ) : (
+        <MobileVersion
         serverSideChatHistory={serverSideChatHistory}
         setServerSideChatHistory={setServerSideChatHistory}
         clientSideChatHistory={clientSideChatHistory}
         setClientSideChatHistory={setClientSideChatHistory}
-      />
-      <RecordButton 
-        serverSideChatHistory={serverSideChatHistory}
-        setServerSideChatHistory={setServerSideChatHistory}
-        clientSideChatHistory={clientSideChatHistory}
-        setClientSideChatHistory={setClientSideChatHistory}
-      />
+        />
+      )}
     </>
   );
 }

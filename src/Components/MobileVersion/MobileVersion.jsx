@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import "./RecordButton.css";
+import "./MobileVersion.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
 
-export default function RecordButton({
+export default function MobileVersion({
   serverSideChatHistory,
   setServerSideChatHistory,
   clientSideChatHistory,
@@ -108,7 +108,7 @@ export default function RecordButton({
         className="record-button"
         ref={buttonRef}
       >
-        Record
+        Record Mobile
       </button>
     </>
   );
