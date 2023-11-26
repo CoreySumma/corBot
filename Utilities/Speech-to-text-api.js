@@ -14,14 +14,6 @@ export default async function speechToText(
       ...prevHistory,
       { role: "user", content: message },
     ]);
-
-    // Call GPT chat API with the updated chat history
-    gptChatApi(
-      serverSideChatHistory,
-      setServerSideChatHistory,
-      clientSideChatHistory,
-      setClientSideChatHistory
-    );
   };
 
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
