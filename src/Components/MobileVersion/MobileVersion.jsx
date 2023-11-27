@@ -194,27 +194,50 @@ export default function MobileVersion({
   }, [recording, mediaRecorderRef]);
 
   return (
-    <div className="record-button-wrapper">
-      <motion.div
-        className="record-button-container"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onTap={handleTap} // This doesnt work yet
-        ref={buttonRef}
-      >
+    <>
+      <div className="record-button-wrapper">
         <motion.div
-          initial="circle"
-          animate={outerCircleAnimation}
-          variants={outerCircleVariants}
-          className="outer-circle"
-        />
-        <motion.div
-          initial="circle"
-          animate={innerCircleAnimation}
-          variants={innerCircleVariants}
-          className="inner-circle"
-        />
-      </motion.div>
-    </div>
+          className="record-button-container"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTap={handleTap} // This doesnt work (yet)
+          ref={buttonRef}
+        >
+          <motion.div
+            initial="circle"
+            animate={outerCircleAnimation}
+            variants={outerCircleVariants}
+            className="outer-circle"
+          />
+          <motion.div
+            initial="circle"
+            animate={innerCircleAnimation}
+            variants={innerCircleVariants}
+            className="inner-circle"
+          />
+        </motion.div>
+      </div>
+      <div className="play-button">
+        <a className="play-button-link">
+          <div className="play-button-outer-circle has-scale-animation"></div>
+          <div className="play-button-outer-circle has-scale-animation has-delay-short"></div>
+          <div className="play-button-icon">
+            <svg height="100%" width="100%" fill="#000000">
+              <polygon
+                className="play-button-triangle"
+                points="5,0 30,15 5,30"
+              />
+              <path
+                className="play-button-path"
+                d="M5,0 L30,15 L5,30z"
+                fill="none"
+                stroke="#000000"
+                strokeWidth="1"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+    </>
   );
 }

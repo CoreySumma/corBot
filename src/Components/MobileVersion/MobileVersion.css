@@ -25,7 +25,83 @@
   height: 150px;
   cursor: pointer;
 } */
+:root {
+  /* --main-color: #f857a6; */
+  --main-color: #f857a6;
+  --second-color: #ff5858;
+}
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes triangleStroke {
+  from { stroke-dashoffset: 90; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes smallScale {
+  from {
+      transform: scale(1);
+      opacity: 1;
+  }
+  to {
+      transform: scale(1.5);
+      opacity: 0;
+  }
+}
+
+/* Styles for the play button */
+.play-button {
+  display: inline-block;
+  position: relative;
+  background-color: #FFF;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin-top: 150px;
+  cursor: pointer;
+}
+
+.play-button-outer-circle, .play-button-outer-circle.has-delay-short {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.play-button-outer-circle.has-scale-animation {
+  animation: smallScale 3s infinite;
+}
+
+.play-button-outer-circle.has-delay-short {
+  animation-delay: 0.5s;
+}
+
+.play-button-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+}
+
+.play-button-triangle {
+  animation: fadeIn 7s ease;
+}
+
+.play-button-path {
+  stroke-dasharray: 90;
+  stroke-dashoffset: 90;
+  animation: triangleStroke 3s ease;
+}
 /* RecordButton.css */
 
 .record-button-wrapper {
