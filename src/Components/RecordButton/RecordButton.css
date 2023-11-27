@@ -1,20 +1,64 @@
-.record-button {
-  width: 100px; /* Adjust size as needed */
-  height: 100px; /* Adjust size as needed */
-  border-radius: 50%; /* Makes the button round */
-  background-color: black; /* Choose your preferred color */
-  color: white; /* Text color */
-  border: none; /* No border */
-  font-size: 18px; /* Adjust font size as needed */
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
+/* .record-button {
+  width: 100px; 
+  height: 100px; 
+  border-radius: 50%; 
+  background-color: black; 
+  color: white; 
+  border: none; 
+  font-size: 18px; 
+  
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow for depth */
-  user-select: none; /* Prevents text selection */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  user-select: none; 
+}
+.record-button:active {
+  background-color: darkred; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
-.record-button:active {
-  background-color: darkred; /* Slightly darker color on click */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Changes the shadow on click */
+.record-button-container {
+  position: 'relative';
+  display: 'flex';
+  justify-content: 'center';
+  align-items: 'center';
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+} */
+
+/* RecordButton.css */
+
+.record-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Adjust height as needed */
+  width: 100%; /* Adjust width as needed */
 }
+
+.record-button-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+}
+
+.outer-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9999px; /* or 50% for a circle */
+}
+
+.inner-circle {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  overflow: hidden;
+  background-color: #FF214D; /* RED_COLOR */
+  border-radius: 50%;
+}
+

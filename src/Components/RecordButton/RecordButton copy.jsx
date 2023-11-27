@@ -1,48 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./RecordButton.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
-import { motion, useAnimation } from "framer-motion";
-
-// Framer variants
-const RED_COLOR = `#FF214D`;
-
-const outerCircleVariants = {
-  circle: {
-    transform: "scale(1)",
-    opacity: 0.5,
-    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
-  },
-  largeCircle: {
-    transform: "scale(2)",
-    opacity: 1,
-    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
-  },
-  pulseIn: {
-    transform: "scale(2)",
-    opacity: 1,
-    boxShadow: `0px 0px 0px 20px ${RED_COLOR}`,
-  },
-  pulseOut: {
-    transform: "scale(2)",
-    opacity: 1,
-    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
-  },
-};
-
-const innerCircleVariants = {
-  circle: {
-    transform: "scale(1)",
-    borderRadius: "100%",
-  },
-  square: {
-    transform: "scale(0.8)",
-    borderRadius: "30%",
-  },
-  invisible: {
-    transform: "scale(0)",
-    borderRadius: "100%",
-  },
-};
+import { motion, useAnimation } from 'framer-motion';
 
 export default function RecordButton({
   serverSideChatHistory,
@@ -57,58 +16,10 @@ export default function RecordButton({
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
 
-  // Framer Motion states
+  // Framer Motion states 
   const [hover, setHover] = useState(false);
-  const [clicked, setClicked] = useState(false);
   const outerCircleAnimation = useAnimation();
   const innerCircleAnimation = useAnimation();
-
-  // Click event to trigger animation
-  const handleClick = () => {
-    setClicked(!clicked);
-  };
-
-  // useEffect for outer circle animation clicked
-  useEffect(() => {
-    (async () => {
-      if (hover) {
-        await outerCircleAnimation.start("largeCircle");
-        await outerCircleAnimation.start(["pulseOut"], {
-          repeat: Infinity,
-          repeatType: "mirror",
-        });
-      } else {
-        await outerCircleAnimation.start("circle");
-      }
-    })();
-  }, [hover, outerCircleAnimation]);
-
-  // useEffect for outer circle animation clicked
-  useEffect(() => {
-    (async () => {
-      if (clicked) {
-        await outerCircleAnimation.start("largeCircle");
-        await outerCircleAnimation.start(["pulseOut", "pulseIn"], {
-          repeat: Infinity,
-          repeatType: "mirror",
-        });
-      } else {
-        await outerCircleAnimation.start("circle");
-      }
-    })();
-  }, [clicked, outerCircleAnimation]);
-
-  // useEffect for inner circle animation clicked
-  useEffect(() => {
-    (async () => {
-      if (clicked) {
-        await innerCircleAnimation.start("square");
-        await innerCircleAnimation.start("invisible");
-      } else {
-        await innerCircleAnimation.start("circle");
-      }
-    })();
-  }, [clicked, innerCircleAnimation]);
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again
@@ -196,34 +107,15 @@ export default function RecordButton({
   }, [recording, mediaRecorderRef]);
 
   return (
-    <div className="record-button-wrapper">
-      <motion.div
-        className="record-button-container"
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onMouseDown={() => {
-          startRecording();
-          handleClick();
-        }}
-        onMouseUp={() => {
-          stopRecording();
-          handleClick();
-        }}
+    <>
+      <button
+        onMouseDown={startRecording}
+        onMouseUp={stopRecording}
+        className="record-button"
         ref={buttonRef}
       >
-        <motion.div
-          initial="circle"
-          animate={outerCircleAnimation}
-          variants={outerCircleVariants}
-          className="outer-circle"
-        />
-        <motion.div
-          initial="circle"
-          animate={innerCircleAnimation}
-          variants={innerCircleVariants}
-          className="inner-circle"
-        />
-      </motion.div>
-    </div>
+        Record
+      </button>
+    </>
   );
 }
