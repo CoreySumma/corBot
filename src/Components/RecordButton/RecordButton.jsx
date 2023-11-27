@@ -68,7 +68,7 @@ export default function RecordButton({
     setClicked(!clicked);
   };
 
-  // useEffect for outer circle animation clicked
+  // useEffect for outer circle animation hover
   useEffect(() => {
     (async () => {
       if (hover) {

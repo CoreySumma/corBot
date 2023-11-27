@@ -1,6 +1,48 @@
 import { useState, useRef, useEffect } from "react";
 import "./MobileVersion.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
+import { motion, useAnimation } from "framer-motion";
+
+// Framer variants
+const RED_COLOR = `#FF214D`;
+
+const outerCircleVariants = {
+  circle: {
+    transform: "scale(1)",
+    opacity: 0.5,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  largeCircle: {
+    transform: "scale(2)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  pulseIn: {
+    transform: "scale(2)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 20px ${RED_COLOR}`,
+  },
+  pulseOut: {
+    transform: "scale(2)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+};
+
+const innerCircleVariants = {
+  circle: {
+    transform: "scale(1)",
+    borderRadius: "100%",
+  },
+  square: {
+    transform: "scale(0.8)",
+    borderRadius: "30%",
+  },
+  invisible: {
+    transform: "scale(0)",
+    borderRadius: "100%",
+  },
+};
 
 export default function MobileVersion({
   serverSideChatHistory,
@@ -14,6 +56,38 @@ export default function MobileVersion({
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
+
+  // Framer Motion states
+  const [active, setActive] = useState(false);
+  const outerCircleAnimation = useAnimation();
+  const innerCircleAnimation = useAnimation();
+
+  // useEffect for outer circle animation ctouchec(active)
+  useEffect(() => {
+    (async () => {
+      if (active) {
+        await outerCircleAnimation.start("largeCircle");
+        await outerCircleAnimation.start(["pulseOut", "pulseIn"], {
+          repeat: Infinity,
+          repeatType: "mirror",
+        });
+      } else {
+        await outerCircleAnimation.start("circle");
+      }
+    })();
+  }, [active, outerCircleAnimation]);
+
+  // useEffect for inner circle animation touched(active)
+  useEffect(() => {
+    (async () => {
+      if (active) {
+        await innerCircleAnimation.start("square");
+        await innerCircleAnimation.start("invisible");
+      } else {
+        await innerCircleAnimation.start("circle");
+      }
+    })();
+  }, [active, innerCircleAnimation]);
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again
@@ -70,6 +144,7 @@ export default function MobileVersion({
   const handleTouchStart = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    setActive(true);
     startRecording();
     console.log("touch start");
   };
@@ -77,6 +152,7 @@ export default function MobileVersion({
   const handleTouchEnd = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    setActive(false);
     stopRecording();
     console.log("touch end");
   };
@@ -101,15 +177,32 @@ export default function MobileVersion({
   }, [recording, mediaRecorderRef]);
 
   return (
-    <>
-      <button
-        onMouseDown={startRecording}
-        onMouseUp={stopRecording}
-        className="record-button"
+    <div className="record-button-wrapper">
+      <motion.div
+        className="record-button-container"
+        onTouchStart={() => {
+          handleTouchStart();
+          handleClick();
+        }}
+        onTouchEnd={() => {
+          handleTouchEnd();
+          handleClick();
+        }}
         ref={buttonRef}
       >
-        Record Mobile
-      </button>
-    </>
+        <motion.div
+          initial="circle"
+          animate={outerCircleAnimation}
+          variants={outerCircleVariants}
+          className="outer-circle"
+        />
+        <motion.div
+          initial="circle"
+          animate={innerCircleAnimation}
+          variants={innerCircleVariants}
+          className="inner-circle"
+        />
+      </motion.div>
+    </div>
   );
 }

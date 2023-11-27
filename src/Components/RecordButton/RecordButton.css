@@ -43,6 +43,7 @@
   align-items: center;
   width: 120px;
   height: 120px;
+  margin-top: 100px;
 }
 
 .outer-circle {
@@ -51,6 +52,7 @@
   height: 100%;
   overflow: hidden;
   border-radius: 9999px; /* or 50% for a circle */
+  cursor: pointer;
 }
 
 .inner-circle {
@@ -60,5 +62,6 @@
   overflow: hidden;
   background-color: #FF214D; /* RED_COLOR */
   border-radius: 50%;
+  cursor: pointer;
 }
 
