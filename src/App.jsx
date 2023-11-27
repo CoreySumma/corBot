@@ -10,6 +10,12 @@ import MobileVersion from "./Components/MobileVersion/MobileVersion";
 export default function App() {
   // Check if user is on mobile or desktop
   const [width, setWidth] = useState(checkScreenSize());
+
+  // State for blob audio playback
+  const [audioIsReady, setAudioIsReady] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [blob, setBlob] = useState(null);
+
   console.log(width);
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
@@ -63,6 +69,12 @@ export default function App() {
         setServerSideChatHistory={setServerSideChatHistory}
         clientSideChatHistory={clientSideChatHistory}
         setClientSideChatHistory={setClientSideChatHistory}
+        audioIsReady={audioIsReady}
+        setAudioIsReady={setAudioIsReady}
+        audioUrl={audioUrl}
+        setAudioUrl={setAudioUrl}
+        blob={blob}
+        setBlob={setBlob}
         />
       )}
     </>

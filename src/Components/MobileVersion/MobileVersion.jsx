@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./MobileVersion.css";
-import speechToText from "../../../Utilities/Speech-to-text-api";
+import speechToTextMobile from "../../../Utilities/Mobile/Text-to-speech-mobile-api";
 import { motion, useAnimation } from "framer-motion";
 
 // Framer variants
@@ -49,6 +49,12 @@ export default function MobileVersion({
   setServerSideChatHistory,
   clientSideChatHistory,
   setClientSideChatHistory,
+  audioIsReady,
+  setAudioIsReady,
+  audioUrl,
+  setAudioUrl,
+  blob,
+  setBlob,
 }) {
   // Use refs when we need to access a DOM node or React element from a function component
   // or to persist a value between renders without triggering a re-render
@@ -57,12 +63,17 @@ export default function MobileVersion({
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
 
+  // Tap to record function
+  const toggleRecording = () => {
+    setRecording(!recording);
+  };
+
   // Framer Motion states
   const [active, setActive] = useState(false);
   const outerCircleAnimation = useAnimation();
   const innerCircleAnimation = useAnimation();
 
-  // useEffect for outer circle animation ctouchec(active)
+  // useEffect for outer circle animation for touch(active)
   useEffect(() => {
     (async () => {
       if (active) {
@@ -77,7 +88,7 @@ export default function MobileVersion({
     })();
   }, [active, outerCircleAnimation]);
 
-  // useEffect for inner circle animation touched(active)
+  // useEffect for inner circle animation for touch(active)
   useEffect(() => {
     (async () => {
       if (active) {
@@ -112,7 +123,7 @@ export default function MobileVersion({
             type: "audio/webm",
           });
           // Call the speechToText function with the audioBlob and the chat history
-          speechToText(
+          speechToTextMobile(
             audioBlob,
             serverSideChatHistory,
             setServerSideChatHistory,
@@ -156,6 +167,13 @@ export default function MobileVersion({
     stopRecording();
     console.log("touch end");
   };
+  const handleTap = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setActive(!active);
+    toggleRecording();
+    console.log("tappa tappa tappa");
+  };
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -180,14 +198,9 @@ export default function MobileVersion({
     <div className="record-button-wrapper">
       <motion.div
         className="record-button-container"
-        onTouchStart={() => {
-          handleTouchStart();
-          handleClick();
-        }}
-        onTouchEnd={() => {
-          handleTouchEnd();
-          handleClick();
-        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTap={handleTap} // This doesnt work yet
         ref={buttonRef}
       >
         <motion.div

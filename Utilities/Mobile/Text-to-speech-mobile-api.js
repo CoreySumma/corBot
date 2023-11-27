@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default async function ttsApi(newMessage) {
+export default async function ttsmApi(newMessage) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
 
   try {

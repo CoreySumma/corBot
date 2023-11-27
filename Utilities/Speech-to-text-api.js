@@ -1,5 +1,4 @@
 import axios from "axios";
-import gptChatApi from "./Gpt-chat-api";
 
 export default async function speechToText(
   audioRecording,
