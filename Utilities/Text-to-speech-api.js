@@ -24,7 +24,7 @@ export default async function ttsApi(newMessage) {
     let blob = response.data; 
     let url = URL.createObjectURL(blob); // Create a temporary URL for the Blob
     let audio = new Audio(url);
-    audio.play(); x
+    audio.play(); 
 
     // Revoke the URL after playing
     audio.onended = () => URL.revokeObjectURL(url);

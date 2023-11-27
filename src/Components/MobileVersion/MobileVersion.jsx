@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./MobileVersion.css";
-import speechToTextMobile from "../../../Utilities/Mobile/Text-to-speech-mobile-api";
+import speechToText from "../../../Utilities/Speech-to-text-api";
 import { motion, useAnimation } from "framer-motion";
 
 // Framer variants
@@ -123,7 +123,7 @@ export default function MobileVersion({
             type: "audio/webm",
           });
           // Call the speechToText function with the audioBlob and the chat history
-          speechToTextMobile(
+          speechToText(
             audioBlob,
             serverSideChatHistory,
             setServerSideChatHistory,
@@ -172,7 +172,6 @@ export default function MobileVersion({
     e.preventDefault();
     setActive(!active);
     toggleRecording();
-    console.log("tappa tappa tappa");
   };
 
   useEffect(() => {

@@ -1,11 +1,17 @@
 import axios from "axios";
-import ttsmApi from "../Text-to-speech-mobile-api";
+import ttsmApi from "./Text-to-speech-mobile-api";
 
-export default async function gptChatMobileApi(
+export default async function gptMobileChatApi(
   serverSideChatHistory,
   setServerSideChatHistory,
   clientSideChatHistory,
-  setClientSideChatHistory
+  setClientSideChatHistory,
+  audio,
+  setAudio,
+  audioUrl,
+  setAudioUrl,
+  blob,
+  setBlob
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
   console.log("calling GPT....");
@@ -23,7 +29,6 @@ export default async function gptChatMobileApi(
         },
       }
     );
-    console.log(serverSideChatHistory)
     setServerSideChatHistory((prevHistory) => [
       ...prevHistory,
       response.data.choices[0].message,
@@ -32,7 +37,10 @@ export default async function gptChatMobileApi(
       ...prevHistory,
       response.data.choices[0].message,
     ]);
-    ttsmApi(response.data.choices[0].message.content);
+    console.log(serverSideChatHistory);
+    let newMessage = response.data.choices[0].message.content;
+    // Call Text to speech API with args
+    ttsmApi(newMessage, audio, setAudio, audioUrl, setAudioUrl, blob, setBlob);
     return response.data.choices[0].message.content;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);

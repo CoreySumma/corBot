@@ -3,6 +3,7 @@ import ChatBox from "./Components/Chat/ChatBox";
 import RecordButton from "./Components/RecordButton/RecordButton";
 import gptChatPrompt from "../Utilities/Gpt-chat-prompt";
 import gptChatApi from "../Utilities/Gpt-chat-api";
+import gptMobileChatApi from "../Utilities/Mobile/Gpt-chat-api-mobile";
 import checkScreenSize from "../Utilities/Check-screen-size";
 import React, { useState, useEffect } from "react";
 import MobileVersion from "./Components/MobileVersion/MobileVersion";
@@ -30,21 +31,47 @@ export default function App() {
   const [clientSideChatHistory, setClientSideChatHistory] = useState([
     introMessage,
   ]);
-
+// UseEffect to trigger desktop version of GPT chat API when the server-side chat history changes
   useEffect(() => {
     // Check if the last message was from the user
     if (
       serverSideChatHistory.length > 0 &&
-      serverSideChatHistory[serverSideChatHistory.length - 1].role === "user"
+      serverSideChatHistory[serverSideChatHistory.length - 1].role === "user" &&
+      width > 600
     ) {
       gptChatApi(
         serverSideChatHistory,
         setServerSideChatHistory,
         clientSideChatHistory,
-        setClientSideChatHistory
+        setClientSideChatHistory,
+        
       );
     }
   }, [serverSideChatHistory]);
+// UseEffect to trigger mobile version of GPT chat API when the server-side chat history changes
+  useEffect(() => {
+    // Check if the last message was from the user
+    if (
+      serverSideChatHistory.length > 0 &&
+      serverSideChatHistory[serverSideChatHistory.length - 1].role === "user" &&
+      width < 600
+    ) {
+      gptMobileChatApi(
+        serverSideChatHistory,
+        setServerSideChatHistory,
+        clientSideChatHistory,
+        setClientSideChatHistory,
+        audioIsReady,
+        setAudioIsReady,
+        audioUrl,
+        setAudioUrl,
+        blob,
+        setBlob,
+      );
+    }
+  }, [serverSideChatHistory]);
+
+
   return (
     <>
       <h1>CorBot 2.0</h1>
