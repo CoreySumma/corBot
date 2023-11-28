@@ -13,11 +13,14 @@ export default function App() {
   const [width, setWidth] = useState(checkScreenSize());
 
   // State for blob audio playback
-  const [audioIsReady, setAudioIsReady] = useState(false);
+  const [audio, setAudio] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [blob, setBlob] = useState(null);
 
-  console.log(width);
+  useEffect(() => {
+    console.log("Audio state updated:", audio);
+  }, [audio]);
+
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
     content:
@@ -61,8 +64,8 @@ export default function App() {
         setServerSideChatHistory,
         clientSideChatHistory,
         setClientSideChatHistory,
-        audioIsReady,
-        setAudioIsReady,
+        audio,
+        setAudio,
         audioUrl,
         setAudioUrl,
         blob,
@@ -96,8 +99,8 @@ export default function App() {
         setServerSideChatHistory={setServerSideChatHistory}
         clientSideChatHistory={clientSideChatHistory}
         setClientSideChatHistory={setClientSideChatHistory}
-        audioIsReady={audioIsReady}
-        setAudioIsReady={setAudioIsReady}
+        audioy={audio}
+        setAudio={setAudio}
         audioUrl={audioUrl}
         setAudioUrl={setAudioUrl}
         blob={blob}

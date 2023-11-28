@@ -36,11 +36,9 @@ export default async function ttsmApi(
     setAudio(audio);
     setAudioUrl(url);
     setBlob(blob);
-    // Play the audio
-    audio.play();
 
     // Revoke the URL after playing
-    audio.onended = () => URL.revokeObjectURL(url);
+    // audio.onended = () => URL.revokeObjectURL(url);
 
     return response.data; // Our Blob object
   } catch (error) {

@@ -49,8 +49,8 @@ export default function MobileVersion({
   setServerSideChatHistory,
   clientSideChatHistory,
   setClientSideChatHistory,
-  audioIsReady,
-  setAudioIsReady,
+  audio,
+  setAudio,
   audioUrl,
   setAudioUrl,
   blob,
@@ -99,6 +99,8 @@ export default function MobileVersion({
       }
     })();
   }, [active, innerCircleAnimation]);
+
+  // Logic for recording
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again
@@ -193,6 +195,24 @@ export default function MobileVersion({
     }
   }, [recording, mediaRecorderRef]);
 
+  // Logic for playing audio
+  const handlePlay = () => {
+    if (audioUrl) {
+      let playAudio = new Audio(audioUrl);
+      playAudio.play();
+      setAudioUrl(null);
+    }
+  };
+
+  const outerCircleClass =
+    audioUrl !== null
+      ? "play-button-outer-circle has-scale-animation"
+      : "play-button-outer-circle";
+  const outerCircleDelayedClass =
+    audioUrl !== null
+      ? "play-button-outer-circle has-scale-animation has-delay-short"
+      : "play-button-outer-circle";
+
   return (
     <>
       <div className="record-button-wrapper">
@@ -217,27 +237,31 @@ export default function MobileVersion({
           />
         </motion.div>
       </div>
-      <div className="play-button">
-        <a className="play-button-link">
-          <div className="play-button-outer-circle has-scale-animation"></div>
-          <div className="play-button-outer-circle has-scale-animation has-delay-short"></div>
-          <div className="play-button-icon">
-            <svg height="100%" width="100%" fill="#000000">
-              <polygon
-                className="play-button-triangle"
-                points="5,0 30,15 5,30"
-              />
-              <path
-                className="play-button-path"
-                d="M5,0 L30,15 L5,30z"
-                fill="none"
-                stroke="#000000"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
-        </a>
-      </div>
+      <div 
+  onTouchStart={handlePlay} // For touch screen devices
+  onClick={handlePlay} // For non-touch devices (like desktop)
+  className="play-button"
+>
+  <a className="play-button-link">
+    <div className={outerCircleClass}></div>
+    <div className={outerCircleDelayedClass}></div>
+    <div className="play-button-icon">
+      <svg height="100%" width="100%" fill="#000000">
+        <polygon
+          className="play-button-triangle"
+          points="5,0 30,15 5,30"
+        />
+        <path
+          className="play-button-path"
+          d="M5,0 L30,15 L5,30z"
+          fill="none"
+          stroke="#000000"
+          strokeWidth="1"
+        />
+      </svg>
+    </div>
+  </a>
+</div>
     </>
   );
 }
