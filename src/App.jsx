@@ -92,7 +92,7 @@ export default function App() {
         setBlob,
       );
     }
-  }, [serverSideChatHistory]);
+  }, [serverSideChatHistory, audio, audioUrl, blob, width]);
 
   // useEffect(() => {
   //   gptMobileChatApi(
@@ -134,7 +134,7 @@ export default function App() {
           setServerSideChatHistory={setServerSideChatHistory}
           clientSideChatHistory={clientSideChatHistory}
           setClientSideChatHistory={setClientSideChatHistory}
-          audioy={audio}
+          audio={audio}
           setAudio={setAudio}
           audioUrl={audioUrl}
           setAudioUrl={setAudioUrl}

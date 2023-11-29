@@ -7,7 +7,9 @@ export default async function speechToTextMobile(
   clientSideChatHistory,
   setClientSideChatHistory
 ) {
-  // Helper function to handle server side chat history with user messages and call GPT after adding it
+  // Helper function to handle server side chat history with 
+  // user messages and call GPT after adding it
+  console.log("calling speech to text mobile")
   const addMessageToServerSideChatHistory = (message) => {
     setServerSideChatHistory((prevHistory) => [
       ...prevHistory,
@@ -15,12 +17,23 @@ export default async function speechToTextMobile(
     ]);
   };
 
-  const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
+  // Check if audio recording is valid
+  if (!audioRecording || audioRecording.size === 0) {
+    console.error("Invalid or empty audio recording.");
+    return;
+  }
+
+  console.log("audio recording:", audioRecording)
+
+  
   const formData = new FormData();
-  formData.append("file", audioRecording, "recording.mp4"); // 'recording.mp4' is the filename
+  formData.append("file", audioRecording, "recording.mp4");
   formData.append("model", "whisper-1");
 
+  const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
+
   try {
+    console.log("Sending audio data with formData:", formData);
     const response = await axios.post(
       "https://api.openai.com/v1/audio/transcriptions",
       formData,
@@ -31,10 +44,12 @@ export default async function speechToTextMobile(
         },
       }
     );
+    console.log("Successfully received response from OpenAI API:", response);
     addMessageToServerSideChatHistory(response.data.text);
+    console.log(serverSideChatHistory);
     return response.data;
   } catch (error) {
     console.error("Error in audio transcription request:", error);
-    throw error; 
+    // Additional error handling logic can be added here
   }
 }
