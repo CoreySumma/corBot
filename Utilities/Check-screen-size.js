@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
 
 export default function checkScreenSize() {
-  const [size, setSize] = useState([window.innerWidth]);
+  const [width, setWidth] = useState(window.innerWidth); 
 
   useEffect(() => {
     const handleResize = () => {
-      setSize([window.innerWidth]);
+      setWidth(window.innerWidth); 
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, []); 
 
-  return size;
+  return width;
 }
-

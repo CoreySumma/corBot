@@ -5,21 +5,43 @@ import gptChatPrompt from "../Utilities/Gpt-chat-prompt";
 import gptChatApi from "../Utilities/Gpt-chat-api";
 import gptMobileChatApi from "../Utilities/Mobile/Gpt-chat-api-mobile";
 import checkScreenSize from "../Utilities/Check-screen-size";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MobileVersion from "./Components/MobileVersion/MobileVersion";
+import { useMediaQuery } from "react-responsive";
 
 export default function App() {
   // Check if user is on mobile or desktop
-  const [width, setWidth] = useState(checkScreenSize());
+  const width = checkScreenSize();
+
+  const isDesktop = useMediaQuery({ minWidth: 601 });
 
   // State for blob audio playback
   const [audio, setAudio] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [blob, setBlob] = useState(null);
 
-  useEffect(() => {
-    console.log("Audio state updated:", audio);
-  }, [audio]);
+  // const supportedTypes = [
+  //   "flac",
+  //   "m4a",
+  //   "mp3",
+  //   "mp4",
+  //   "mpeg",
+  //   "mpga",
+  //   "oga",
+  //   "ogg",
+  //   "wav",
+  //   "webm",
+  // ];
+  // supportedTypes.forEach((type) => {
+  //   console.log(
+  //     type + " supported: ",
+  //     MediaRecorder.isTypeSupported("audio/" + type)
+  //   );
+  // });
+
+  // useEffect(() => {
+  //   console.log("Audio state updated:", audio);
+  // }, [audio]);
 
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
@@ -34,7 +56,7 @@ export default function App() {
   const [clientSideChatHistory, setClientSideChatHistory] = useState([
     introMessage,
   ]);
-// UseEffect to trigger desktop version of GPT chat API when the server-side chat history changes
+  // UseEffect to trigger desktop version of GPT chat API when the server-side chat history changes
   useEffect(() => {
     // Check if the last message was from the user
     if (
@@ -47,7 +69,6 @@ export default function App() {
         setServerSideChatHistory,
         clientSideChatHistory,
         setClientSideChatHistory,
-        
       );
     }
   }, [serverSideChatHistory]);
@@ -55,9 +76,8 @@ export default function App() {
   useEffect(() => {
     // Check if the last message was from the user
     if (
-      serverSideChatHistory.length > 0 &&
-      serverSideChatHistory[serverSideChatHistory.length - 1].role === "user" &&
-      width < 600
+      width < 600 &&
+      serverSideChatHistory[serverSideChatHistory.length - 1].role === "user" 
     ) {
       gptMobileChatApi(
         serverSideChatHistory,
@@ -74,11 +94,26 @@ export default function App() {
     }
   }, [serverSideChatHistory]);
 
+  // useEffect(() => {
+  //   gptMobileChatApi(
+  //             serverSideChatHistory,
+  //             setServerSideChatHistory,
+  //             clientSideChatHistory,
+  //             setClientSideChatHistory,
+  //             audio,
+  //             setAudio,
+  //             audioUrl,
+  //             setAudioUrl,
+  //             blob,
+  //             setBlob,
+  //           );
+  //   }
+  // , [serverSideChatHistory]);
 
   return (
     <>
       <h1>CorBot 2.0</h1>
-      {width > 600 ? (
+      {isDesktop ? (
         <>
           <ChatBox
             serverSideChatHistory={serverSideChatHistory}
@@ -95,16 +130,16 @@ export default function App() {
         </>
       ) : (
         <MobileVersion
-        serverSideChatHistory={serverSideChatHistory}
-        setServerSideChatHistory={setServerSideChatHistory}
-        clientSideChatHistory={clientSideChatHistory}
-        setClientSideChatHistory={setClientSideChatHistory}
-        audioy={audio}
-        setAudio={setAudio}
-        audioUrl={audioUrl}
-        setAudioUrl={setAudioUrl}
-        blob={blob}
-        setBlob={setBlob}
+          serverSideChatHistory={serverSideChatHistory}
+          setServerSideChatHistory={setServerSideChatHistory}
+          clientSideChatHistory={clientSideChatHistory}
+          setClientSideChatHistory={setClientSideChatHistory}
+          audioy={audio}
+          setAudio={setAudio}
+          audioUrl={audioUrl}
+          setAudioUrl={setAudioUrl}
+          blob={blob}
+          setBlob={setBlob}
         />
       )}
     </>

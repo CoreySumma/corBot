@@ -38,7 +38,7 @@ export default async function gptMobileChatApi(
       response.data.choices[0].message,
     ]);
     console.log(serverSideChatHistory);
-    let newMessage = response.data.choices[0].message.content;
+    const newMessage = response.data.choices[0].message.content;
     // Call Text to speech API with args
     ttsmApi(newMessage, audio, setAudio, audioUrl, setAudioUrl, blob, setBlob);
     return response.data.choices[0].message.content;
