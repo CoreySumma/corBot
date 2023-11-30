@@ -140,7 +140,6 @@ export default function RecordButton({
             clientSideChatHistory,
             setClientSideChatHistory
           );
-          // The current property of the useRef() hook returns a mutable ref object whose .current property is initialized to the passed argument (initialValue). The returned object will persist for the full lifetime of the component.
           audioChunksRef.current = [];
         };
         // Initialize the recorder to 'recording' state by calling start()

@@ -30,6 +30,10 @@ export default async function speechToTextMobile(
   formData.append("file", audioRecording, "recording.mp4");
   formData.append("model", "whisper-1");
 
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+}
+
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
 
   try {
