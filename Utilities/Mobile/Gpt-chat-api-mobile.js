@@ -11,7 +11,7 @@ export default async function gptMobileChatApi(
   audioUrl,
   setAudioUrl,
   blob,
-  setBlob
+  setBlob,
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
   console.log("calling GPT....");

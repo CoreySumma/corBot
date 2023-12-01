@@ -20,6 +20,9 @@ export default function App() {
   const [audioUrl, setAudioUrl] = useState(null);
   const [blob, setBlob] = useState(null);
 
+  // State for loading animation
+  const [loading, setLoading] = useState(false);
+
   // const supportedTypes = [
   //   "flac",
   //   "m4a",
@@ -69,6 +72,7 @@ export default function App() {
         setServerSideChatHistory,
         clientSideChatHistory,
         setClientSideChatHistory,
+        setLoading
       );
     }
   }, [serverSideChatHistory]);
@@ -94,22 +98,6 @@ export default function App() {
     }
   }, [serverSideChatHistory, audio, audioUrl, blob, width]);
 
-  // useEffect(() => {
-  //   gptMobileChatApi(
-  //             serverSideChatHistory,
-  //             setServerSideChatHistory,
-  //             clientSideChatHistory,
-  //             setClientSideChatHistory,
-  //             audio,
-  //             setAudio,
-  //             audioUrl,
-  //             setAudioUrl,
-  //             blob,
-  //             setBlob,
-  //           );
-  //   }
-  // , [serverSideChatHistory]);
-
   return (
     <>
       <h1>CorBot 2.0</h1>
@@ -126,6 +114,8 @@ export default function App() {
             setServerSideChatHistory={setServerSideChatHistory}
             clientSideChatHistory={clientSideChatHistory}
             setClientSideChatHistory={setClientSideChatHistory}
+            loading={loading}
+            setLoading={setLoading}
           />
         </>
       ) : (

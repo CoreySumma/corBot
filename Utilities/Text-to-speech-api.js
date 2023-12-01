@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default async function ttsApi(newMessage) {
+export default async function ttsApi(newMessage, setLoading) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
 
   try {
@@ -20,7 +20,9 @@ export default async function ttsApi(newMessage) {
         },
       }
     );
-
+    if (response) {
+      setLoading(false);
+    }
     let blob = response.data; 
     let url = URL.createObjectURL(blob); // Create a temporary URL for the Blob
     let audio = new Audio(url);

@@ -17,6 +17,21 @@ const outerCircleVariants = {
     opacity: 1,
     boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
   },
+  tinyLargeCircle: {
+    transform: "scale(0.6)",
+    opacity: 0.5,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  loadingPulseIn: {
+    transform: "scale(1)",
+    opacity: 0.1,
+    boxShadow: `0px 0px 0px 20px ${RED_COLOR}`,
+  },
+  loadingPulseOut: {
+    transform: "scale(1)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
   pulseIn: {
     transform: "scale(2)",
     opacity: 1,
@@ -26,6 +41,9 @@ const outerCircleVariants = {
     transform: "scale(2)",
     opacity: 1,
     boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  loading : {
+    transform: "scale(0.5)",
   },
 };
 
@@ -42,6 +60,9 @@ const innerCircleVariants = {
     transform: "scale(0)",
     borderRadius: "100%",
   },
+  loading : {
+    transform: "scale(0)",
+  },
 };
 
 export default function RecordButton({
@@ -49,6 +70,8 @@ export default function RecordButton({
   setServerSideChatHistory,
   clientSideChatHistory,
   setClientSideChatHistory,
+  loading,
+  setLoading,
 }) {
   // Use refs when we need to access a DOM node or React element from a function component
   // or to persist a value between renders without triggering a re-render
@@ -110,6 +133,23 @@ export default function RecordButton({
     })();
   }, [clicked, innerCircleAnimation]);
 
+  // useEffect for loader animation
+  useEffect(() => {
+    (async () => {
+      if (loading) {
+        await innerCircleAnimation.start("loading");
+        await outerCircleAnimation.start("tinyLargeCircle");
+        await outerCircleAnimation.start(["loadingPulseOut", "loadingPulseIn"], {
+          repeat: Infinity,
+          repeatType: "mirror",
+          duration: 1,
+        });
+      } else {
+        return
+      }
+    })();
+  }, [loading]);
+
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again
     setRecording(true);
@@ -138,7 +178,8 @@ export default function RecordButton({
             serverSideChatHistory,
             setServerSideChatHistory,
             clientSideChatHistory,
-            setClientSideChatHistory
+            setClientSideChatHistory,
+            setLoading
           );
           audioChunksRef.current = [];
         };
@@ -150,7 +191,7 @@ export default function RecordButton({
 
   const stopRecording = () => {
     // Check if mediaRecorderRef.current is not null and is recording
-    console.log("enetered stop recording");
+    console.log("entered stop recording");
     if (
       (mediaRecorderRef.current &&
         mediaRecorderRef.current.state === "recording") ||

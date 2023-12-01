@@ -1,7 +1,86 @@
 import { useState, useRef, useEffect } from "react";
 import "./RecordButton.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from "framer-motion";
+
+// Framer variants
+const RED_COLOR = `#FF214D`;
+
+const outerCircleVariants = {
+  circle: {
+    transform: "scale(1)",
+    opacity: 0.5,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  largeCircle: {
+    transform: "scale(2)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  pulseIn: {
+    transform: "scale(2)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 20px ${RED_COLOR}`,
+  },
+  pulseOut: {
+    transform: "scale(2)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+};
+
+const innerCircleVariants = {
+  circle: {
+    transform: "scale(1)",
+    borderRadius: "100%",
+  },
+  square: {
+    transform: "scale(0.8)",
+    borderRadius: "30%",
+  },
+  invisible: {
+    transform: "scale(0)",
+    borderRadius: "100%",
+  },
+};
+
+const loadingVariantsInnerCircle = {
+  initial: {
+    stroke: `${RED_COLOR}`,
+    strokeWidth: 1.7,
+    pathLength: 1.1,
+    pathOffset: 1,
+  },
+  animate: {
+    stroke: `${RED_COLOR}`,
+    strokeWidth: 2.5,
+    transition: {
+      duration: 0.5,
+      repeat: Infinity,
+      repeatType: "reverse",
+      repeatDelay: 0.5,
+    },
+  },
+};
+
+const loadingVariantsOuterCircle = {
+  initial: {
+    stroke: `${RED_COLOR}`,
+    strokeWidth: 1.7,
+    pathLength: 1.1,
+    pathOffset: 1,
+  },
+  animate: {
+    stroke: `${RED_COLOR}`,
+    strokeWidth: 2.5,
+    transition: {
+      duration: 0.5,
+      repeat: Infinity,
+      repeatType: "reverse",
+      repeatDelay: 0.5,
+    },
+  },
+};
 
 export default function RecordButton({
   serverSideChatHistory,
@@ -16,10 +95,71 @@ export default function RecordButton({
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
 
-  // Framer Motion states 
+  // Framer Motion states
   const [hover, setHover] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
   const outerCircleAnimation = useAnimation();
   const innerCircleAnimation = useAnimation();
+
+  // Click event to trigger animation
+  const handleClick = () => {
+    setClicked(!clicked);
+  };
+
+  // useEffect for outer circle animation hover
+  useEffect(() => {
+    (async () => {
+      if (hover) {
+        await outerCircleAnimation.start("largeCircle");
+        await outerCircleAnimation.start(["pulseOut"], {
+          repeat: Infinity,
+          repeatType: "mirror",
+        });
+      } else {
+        await outerCircleAnimation.start("circle");
+      }
+    })();
+  }, [hover, outerCircleAnimation]);
+
+  // useEffect for outer circle animation clicked
+  useEffect(() => {
+    (async () => {
+      if (clicked) {
+        await outerCircleAnimation.start("largeCircle");
+        await outerCircleAnimation.start(["pulseOut", "pulseIn"], {
+          repeat: Infinity,
+          repeatType: "mirror",
+        });
+      } else {
+        await outerCircleAnimation.start("circle");
+      }
+    })();
+  }, [clicked, outerCircleAnimation]);
+
+  // useEffect for inner circle animation clicked
+  useEffect(() => {
+    (async () => {
+      if (clicked) {
+        await innerCircleAnimation.start("square");
+        await innerCircleAnimation.start("invisible");
+      } else {
+        await innerCircleAnimation.start("circle");
+      }
+    })();
+  }, [clicked, innerCircleAnimation]);
+
+  // useEffect for loader animation
+  useEffect(() => {
+    (async () => {
+      if (loading) {
+        await innerCircleAnimation.start("loading");
+        await outerCircleAnimation.start("loading");
+      } else {
+        return;
+      }
+    })();
+  }, [loading]);
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again
@@ -51,7 +191,6 @@ export default function RecordButton({
             clientSideChatHistory,
             setClientSideChatHistory
           );
-          // The current property of the useRef() hook returns a mutable ref object whose .current property is initialized to the passed argument (initialValue). The returned object will persist for the full lifetime of the component.
           audioChunksRef.current = [];
         };
         // Initialize the recorder to 'recording' state by calling start()
@@ -107,15 +246,34 @@ export default function RecordButton({
   }, [recording, mediaRecorderRef]);
 
   return (
-    <>
-      <button
-        onMouseDown={startRecording}
-        onMouseUp={stopRecording}
-        className="record-button"
+    <div className="record-button-wrapper">
+      <motion.div
+        className="record-button-container"
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onMouseDown={() => {
+          startRecording();
+          handleClick();
+        }}
+        onMouseUp={() => {
+          stopRecording();
+          handleClick();
+        }}
         ref={buttonRef}
       >
-        Record
-      </button>
-    </>
+        <motion.div
+          initial="circle"
+          animate={outerCircleAnimation}
+          variants={outerCircleVariants}
+          className="outer-circle"
+        />
+        <motion.div
+          initial="circle"
+          animate={innerCircleAnimation}
+          variants={innerCircleVariants}
+          className="inner-circle"
+        />
+      </motion.div>
+    </div>
   );
 }

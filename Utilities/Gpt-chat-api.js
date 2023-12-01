@@ -5,7 +5,8 @@ export default async function gptChatApi(
   serverSideChatHistory,
   setServerSideChatHistory,
   clientSideChatHistory,
-  setClientSideChatHistory
+  setClientSideChatHistory,
+  setLoading
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
   console.log("calling GPT....");
@@ -32,7 +33,7 @@ export default async function gptChatApi(
       ...prevHistory,
       response.data.choices[0].message,
     ]);
-    ttsApi(response.data.choices[0].message.content);
+    ttsApi(response.data.choices[0].message.content, setLoading);
     return response.data.choices[0].message.content;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);

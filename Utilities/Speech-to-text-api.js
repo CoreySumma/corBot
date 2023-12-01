@@ -5,7 +5,8 @@ export default async function speechToText(
   serverSideChatHistory,
   setServerSideChatHistory,
   clientSideChatHistory,
-  setClientSideChatHistory
+  setClientSideChatHistory,
+  setLoading
 ) {
   // Helper function to handle server side chat history with user messages and call GPT after adding it
   const addMessageToServerSideChatHistory = (message) => {
@@ -19,7 +20,7 @@ export default async function speechToText(
   const formData = new FormData();
   formData.append("file", audioRecording, "recording.mp3"); // 'recording.mp3' is the filename
   formData.append("model", "whisper-1");
-
+  setLoading(true);
   try {
     const response = await axios.post(
       "https://api.openai.com/v1/audio/transcriptions",
