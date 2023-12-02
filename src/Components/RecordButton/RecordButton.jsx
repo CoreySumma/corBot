@@ -133,6 +133,8 @@ export default function RecordButton({
     (async () => {
       if (clicked) {
         await innerCircleAnimation.start("square");
+        // Set a timeout to wait for 2 seconds - elegant line I love it
+        await new Promise((resolve) => setTimeout(resolve, 500));
         await innerCircleAnimation.start("invisible");
       } else {
         await innerCircleAnimation.start("circle");
@@ -247,7 +249,9 @@ export default function RecordButton({
   }, [recording, mediaRecorderRef]);
 
   return (
-    <div className={`record-button-wrapper ${loading ? 'button-disabled' : ''}`}>
+    <div
+      className={`record-button-wrapper ${loading ? "button-disabled" : ""}`}
+    >
       <motion.div
         className="record-button-container"
         onMouseEnter={() => setHover(true)}
