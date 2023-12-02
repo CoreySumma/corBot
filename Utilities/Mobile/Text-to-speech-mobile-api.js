@@ -7,7 +7,8 @@ export default async function ttsmApi(
   audioUrl,
   setAudioUrl,
   blob,
-  setBlob
+  setBlob,
+  setLoading
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
 
@@ -32,10 +33,11 @@ export default async function ttsmApi(
     let blob = response.data;
     let url = URL.createObjectURL(blob); // Create a temporary URL for the Blob
     let audio = new Audio(url);
-    // Set state for audio, audioUrl, and blob
+    // Set state for audio, audioUrl, blob, and loading flag for frontend animation
     setAudio(audio);
     setAudioUrl(url);
     setBlob(blob);
+    setLoading(false);
 
     // audio.play();
 

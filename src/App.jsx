@@ -99,6 +99,8 @@ export default function App() {
         setAudioUrl,
         blob,
         setBlob,
+        dispatch,
+        setLoading
       );
     }
   }, [serverSideChatHistory, audio, audioUrl, blob, width]);
@@ -135,6 +137,8 @@ export default function App() {
           setAudioUrl={setAudioUrl}
           blob={blob}
           setBlob={setBlob}
+          loading={loading}
+          setLoading={setLoading}
         />
       )}
     </>

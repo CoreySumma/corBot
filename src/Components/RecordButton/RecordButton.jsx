@@ -133,7 +133,7 @@ export default function RecordButton({
     (async () => {
       if (clicked) {
         await innerCircleAnimation.start("square");
-        // Set a timeout to wait for 2 seconds - elegant line I love it
+        // Set a timeout to wait for 2 seconds - elegant line I love it <3
         await new Promise((resolve) => setTimeout(resolve, 500));
         await innerCircleAnimation.start("invisible");
       } else {

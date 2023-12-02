@@ -12,6 +12,8 @@ export default async function gptMobileChatApi(
   setAudioUrl,
   blob,
   setBlob,
+  loading,
+  setLoading
 ) {
   const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
   console.log("calling GPT....");
@@ -40,7 +42,7 @@ export default async function gptMobileChatApi(
     console.log(serverSideChatHistory);
     const newMessage = response.data.choices[0].message.content;
     // Call Text to speech API with args
-    ttsmApi(newMessage, audio, setAudio, audioUrl, setAudioUrl, blob, setBlob);
+    ttsmApi(newMessage, audio, setAudio, audioUrl, setAudioUrl, blob, setBlob, setLoading);
     return response.data.choices[0].message.content;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);

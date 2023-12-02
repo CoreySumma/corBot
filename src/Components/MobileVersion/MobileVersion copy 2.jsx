@@ -63,14 +63,23 @@ export default function MobileVersion({
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
 
-  const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [audioChunks, setAudioChunks] = useState([]);
-
-
   // Framer Motion states
   const [active, setActive] = useState(false);
   const outerCircleAnimation = useAnimation();
   const innerCircleAnimation = useAnimation();
+
+  // Request access to the microphone on component load
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        setMediaStream(stream);
+        // You can set up the MediaRecorder here or keep it in startRecording
+        // For example: mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "audio/mp4" });
+      })
+      .catch(e => console.error("Error accessing microphone: ", e));
+  }, []);
+  
+  
 
   // useEffect for outer circle animation for touch(active)
   useEffect(() => {
@@ -114,6 +123,7 @@ export default function MobileVersion({
         mediaRecorderRef.current = new MediaRecorder(stream, {
           mimeType: "audio/mp4",
         });
+        console.log("New MediaRecorder instance:", mediaRecorderRef.current);
         // The ondataavailable event handler is called when the MediaRecorder has gathered data available
         mediaRecorderRef.current.ondataavailable = (e) => {
           if (!stopTheChunks) {
@@ -127,7 +137,7 @@ export default function MobileVersion({
             "Recording stopped. Total chunks: ",
             audioChunksRef.current.length
           );
-          const audioBlob = new Blob(audioChunksRef.current, {
+          let audioBlob = new Blob(audioChunksRef.current, {
             type: "audio/mp4",
           });
           console.log("Blob created. Blob size: ", audioBlob.size); // Log Blob size
@@ -139,12 +149,11 @@ export default function MobileVersion({
               serverSideChatHistory,
               setServerSideChatHistory,
               clientSideChatHistory,
-              setClientSideChatHistory
+              setClientSideChatHistory,
             );
           } else {
             console.error("No audio data recorded");
           }
-
           audioChunksRef.current = [];
         };
 
@@ -152,13 +161,14 @@ export default function MobileVersion({
         // Because mp4s are larger files, we need to record in chunks
         // The start() method of the MediaRecorder Interface starts recording
         // and pushes 1 second chunks to the audioChunksRef.current array
-        mediaRecorderRef.current.start(1000); // Start recording with a timeslice of 1000ms (1 second)
+        mediaRecorderRef.current.start(500); // Start recording with a timeslice of 1000ms (1 second)
         console.log("Recording started");
       })
       .catch((e) => console.error("Error accessing microphone: ", e));
   };
 
   const stopRecording = () => {
+    console.log("MediaRecorder state before stopping:", mediaRecorderRef.current?.state);
     // If there's an active MediaRecorder instance and it's recording, stop it
     if (
       mediaRecorderRef.current &&

@@ -17,6 +17,21 @@ const outerCircleVariants = {
     opacity: 1,
     boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
   },
+  tinyLargeCircle: {
+    transform: "scale(0.6)",
+    opacity: 0.5,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  loadingPulseIn: {
+    transform: "scale(1)",
+    opacity: 0.1,
+    boxShadow: `0px 0px 0px 20px ${RED_COLOR}`,
+  },
+  loadingPulseOut: {
+    transform: "scale(1)",
+    opacity: 1,
+    boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
   pulseIn: {
     transform: "scale(2)",
     opacity: 1,
@@ -26,6 +41,9 @@ const outerCircleVariants = {
     transform: "scale(2)",
     opacity: 1,
     boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
+  },
+  loading: {
+    transform: "scale(0.5)",
   },
 };
 
@@ -42,6 +60,9 @@ const innerCircleVariants = {
     transform: "scale(0)",
     borderRadius: "100%",
   },
+  loading: {
+    transform: "scale(0)",
+  },
 };
 
 export default function MobileVersion({
@@ -55,6 +76,9 @@ export default function MobileVersion({
   setAudioUrl,
   blob,
   setBlob,
+  dispatch,
+  loading,
+  setLoading,
 }) {
   // Use refs when we need to access a DOM node or React element from a function component
   // or to persist a value between renders without triggering a re-render
@@ -70,16 +94,15 @@ export default function MobileVersion({
 
   // Request access to the microphone on component load
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
         setMediaStream(stream);
         // You can set up the MediaRecorder here or keep it in startRecording
         // For example: mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "audio/mp4" });
       })
-      .catch(e => console.error("Error accessing microphone: ", e));
+      .catch((e) => console.error("Error accessing microphone: ", e));
   }, []);
-  
-  
 
   // useEffect for outer circle animation for touch(active)
   useEffect(() => {
@@ -107,6 +130,26 @@ export default function MobileVersion({
       }
     })();
   }, [active, innerCircleAnimation]);
+
+  // useEffect for loader animation
+  useEffect(() => {
+    (async () => {
+      if (loading) {
+        await innerCircleAnimation.start("loading");
+        await outerCircleAnimation.start(
+          ["loadingPulseOut", "loadingPulseIn"],
+          {
+            repeat: Infinity,
+            repeatType: "mirror",
+            duration: 1,
+          }
+        );
+      } else {
+        await innerCircleAnimation.start("circle");
+        await outerCircleAnimation.start("circle");
+      }
+    })();
+  }, [loading, innerCircleAnimation, outerCircleAnimation]);
 
   // Logic for recording
   let stopTheChunks = true;
@@ -149,7 +192,8 @@ export default function MobileVersion({
               serverSideChatHistory,
               setServerSideChatHistory,
               clientSideChatHistory,
-              setClientSideChatHistory
+              setClientSideChatHistory,
+              setLoading,
             );
           } else {
             console.error("No audio data recorded");
@@ -168,7 +212,10 @@ export default function MobileVersion({
   };
 
   const stopRecording = () => {
-    console.log("MediaRecorder state before stopping:", mediaRecorderRef.current?.state);
+    console.log(
+      "MediaRecorder state before stopping:",
+      mediaRecorderRef.current?.state
+    );
     // If there's an active MediaRecorder instance and it's recording, stop it
     if (
       mediaRecorderRef.current &&
@@ -180,28 +227,6 @@ export default function MobileVersion({
     // Immediately set recording state to false to prevent more chunks being added
     setRecording(false);
   };
-
-  // // In the ondataavailable event
-  // mediaRecorderRef.current.ondataavailable = (e) => {
-  //   // Only add chunks if recording is true
-  //   if (recording && e.data.size > 0) {
-  //     console.log("Data available: Chunk size", e.data.size);
-  //     audioChunksRef.current.push(e.data);
-  //   }
-  // };
-
-  // const stopRecording = () => {
-  //   // Check if mediaRecorderRef.current is not null and is recording
-  //   console.log("enetered stop recording");
-  //   if (
-  //     (mediaRecorderRef.current &&
-  //       mediaRecorderRef.current.state === "recording") ||
-  //     recording
-  //   ) {
-  //     mediaRecorderRef.current.stop();
-  //     setRecording(false);
-  //   }
-  // };
 
   const handleTouchStart = (e) => {
     e.stopPropagation();

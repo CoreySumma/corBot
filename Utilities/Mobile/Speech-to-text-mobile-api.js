@@ -5,8 +5,11 @@ export default async function speechToTextMobile(
   serverSideChatHistory,
   setServerSideChatHistory,
   clientSideChatHistory,
-  setClientSideChatHistory
+  setClientSideChatHistory,
+  setLoading
 ) {
+  const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
+
   // Helper function to handle server side chat history with 
   // user messages and call GPT after adding it
   console.log("calling speech to text mobile")
@@ -29,12 +32,7 @@ export default async function speechToTextMobile(
   const formData = new FormData();
   formData.append("file", audioRecording, "recording.mp4");
   formData.append("model", "whisper-1");
-
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-}
-
-  const gptApiKey = import.meta.env.VITE_OPEN_AI_KEY;
+  setLoading(true);
 
   try {
     console.log("Sending audio data with formData:", formData);
