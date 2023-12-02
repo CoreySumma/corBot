@@ -60,8 +60,12 @@
   width: 90%;
   height: 90%;
   overflow: hidden;
-  background-color: #FF214D; /* RED_COLOR */
+  background-color: #ff214d; /* RED_COLOR */
   border-radius: 50%;
   cursor: pointer;
 }
 
+.button-disabled {
+  pointer-events: none; /* Disables click events */
+  cursor: default; /* Changes cursor to default */
+}

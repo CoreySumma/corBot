@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import "./RecordButton.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
 import { motion, useAnimation } from "framer-motion";
+import { useSelector } from "react-redux";
 
 // Framer variants
 const RED_COLOR = `#FF214D`;
@@ -94,6 +95,7 @@ export default function RecordButton({
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
+ 
 
   // Framer Motion states
   const [hover, setHover] = useState(false);
@@ -156,10 +158,12 @@ export default function RecordButton({
         await innerCircleAnimation.start("loading");
         await outerCircleAnimation.start("loading");
       } else {
-        return;
+        await innerCircleAnimation.start("circle");
+        await outerCircleAnimation.start("circle");
       }
     })();
   }, [loading]);
+  
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again

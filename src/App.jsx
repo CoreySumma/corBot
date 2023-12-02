@@ -8,6 +8,7 @@ import checkScreenSize from "../Utilities/Check-screen-size";
 import React, { useState, useEffect, useRef } from "react";
 import MobileVersion from "./Components/MobileVersion/MobileVersion";
 import { useMediaQuery } from "react-responsive";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function App() {
   // Check if user is on mobile or desktop
@@ -22,6 +23,9 @@ export default function App() {
 
   // State for loading animation
   const [loading, setLoading] = useState(false);
+
+   // Redux
+   const dispatch = useDispatch();
 
   // const supportedTypes = [
   //   "flac",
@@ -72,7 +76,8 @@ export default function App() {
         setServerSideChatHistory,
         clientSideChatHistory,
         setClientSideChatHistory,
-        setLoading
+        setLoading,
+        dispatch
       );
     }
   }, [serverSideChatHistory]);

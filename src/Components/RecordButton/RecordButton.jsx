@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import "./RecordButton.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
 import { motion, useAnimation } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
 
 // Framer variants
 const RED_COLOR = `#FF214D`;
@@ -42,7 +43,7 @@ const outerCircleVariants = {
     opacity: 1,
     boxShadow: `0px 0px 0px 10px ${RED_COLOR}`,
   },
-  loading : {
+  loading: {
     transform: "scale(0.5)",
   },
 };
@@ -60,7 +61,7 @@ const innerCircleVariants = {
     transform: "scale(0)",
     borderRadius: "100%",
   },
-  loading : {
+  loading: {
     transform: "scale(0)",
   },
 };
@@ -79,6 +80,12 @@ export default function RecordButton({
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const buttonRef = useRef(null);
+
+  // Redux vars
+  // const areWeLoading = useSelector((state) => state.loading);
+
+  // Redux
+  const dispatch = useDispatch();
 
   // Framer Motion states
   const [hover, setHover] = useState(false);
@@ -138,17 +145,20 @@ export default function RecordButton({
     (async () => {
       if (loading) {
         await innerCircleAnimation.start("loading");
-        await outerCircleAnimation.start("tinyLargeCircle");
-        await outerCircleAnimation.start(["loadingPulseOut", "loadingPulseIn"], {
-          repeat: Infinity,
-          repeatType: "mirror",
-          duration: 1,
-        });
+        await outerCircleAnimation.start(
+          ["loadingPulseOut", "loadingPulseIn"],
+          {
+            repeat: Infinity,
+            repeatType: "mirror",
+            duration: 1,
+          }
+        );
       } else {
-        return
+        await innerCircleAnimation.start("circle");
+        await outerCircleAnimation.start("circle");
       }
     })();
-  }, [loading]);
+  }, [loading, innerCircleAnimation, outerCircleAnimation]);
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again
@@ -179,7 +189,8 @@ export default function RecordButton({
             setServerSideChatHistory,
             clientSideChatHistory,
             setClientSideChatHistory,
-            setLoading
+            setLoading,
+            dispatch
           );
           audioChunksRef.current = [];
         };
@@ -236,7 +247,7 @@ export default function RecordButton({
   }, [recording, mediaRecorderRef]);
 
   return (
-    <div className="record-button-wrapper">
+    <div className={`record-button-wrapper ${loading ? 'button-disabled' : ''}`}>
       <motion.div
         className="record-button-container"
         onMouseEnter={() => setHover(true)}
