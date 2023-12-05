@@ -61,6 +61,16 @@ const innerCircleVariants = {
     transform: "scale(0)",
     borderRadius: "100%",
   },
+  triangle: {
+    width: "80px",  // Adjust the size as needed
+    height: "80px", // Adjust the size as needed
+    backgroundColor: `${RED_COLOR}`, // Set the color of your choice
+    clipPath: "polygon(0% 0%, 100% 50%, 0% 100%)", // Points the triangle to the right
+    transform: "scale(0.8)", // Adjust scale if needed
+    borderRadius: "0", // Ensures edges are straight
+    position: "relative", // Allows for positioning
+    // Additional properties for positioning or other styling if needed
+  },
   loading: {
     transform: "scale(0)",
   },
@@ -133,6 +143,7 @@ export default function RecordButton({
     (async () => {
       if (clicked) {
         await innerCircleAnimation.start("square");
+        // await innerCircleAnimation.start("triangle");
         // Set a timeout to wait for 2 seconds - elegant line I love it <3
         await new Promise((resolve) => setTimeout(resolve, 500));
         await innerCircleAnimation.start("invisible");
@@ -161,6 +172,14 @@ export default function RecordButton({
       }
     })();
   }, [loading, innerCircleAnimation, outerCircleAnimation]);
+
+  // if not loading or hover or clicked then set to circle
+  useEffect(() => {
+    if (!loading && !hover && !clicked) {
+      innerCircleAnimation.start("circle");
+      outerCircleAnimation.start("circle");
+    }
+  }, [loading, hover, clicked, innerCircleAnimation, outerCircleAnimation]);
 
   const startRecording = () => {
     if (recording) return; // If already recording, don't start again

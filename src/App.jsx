@@ -27,29 +27,6 @@ export default function App() {
    // Redux
    const dispatch = useDispatch();
 
-  // const supportedTypes = [
-  //   "flac",
-  //   "m4a",
-  //   "mp3",
-  //   "mp4",
-  //   "mpeg",
-  //   "mpga",
-  //   "oga",
-  //   "ogg",
-  //   "wav",
-  //   "webm",
-  // ];
-  // supportedTypes.forEach((type) => {
-  //   console.log(
-  //     type + " supported: ",
-  //     MediaRecorder.isTypeSupported("audio/" + type)
-  //   );
-  // });
-
-  // useEffect(() => {
-  //   console.log("Audio state updated:", audio);
-  // }, [audio]);
-
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
     content:
@@ -110,12 +87,12 @@ export default function App() {
       <h1>CorBot 2.0</h1>
       {isDesktop ? (
         <>
-          <ChatBox
+          {/* <ChatBox
             serverSideChatHistory={serverSideChatHistory}
             setServerSideChatHistory={setServerSideChatHistory}
             clientSideChatHistory={clientSideChatHistory}
             setClientSideChatHistory={setClientSideChatHistory}
-          />
+          /> */}
           <RecordButton
             serverSideChatHistory={serverSideChatHistory}
             setServerSideChatHistory={setServerSideChatHistory}

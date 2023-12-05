@@ -124,6 +124,8 @@ export default function MobileVersion({
     (async () => {
       if (active) {
         await innerCircleAnimation.start("square");
+        // Set a timeout to wait for 2 seconds - elegant line I love it <3
+        await new Promise((resolve) => setTimeout(resolve, 500));
         await innerCircleAnimation.start("invisible");
       } else {
         await innerCircleAnimation.start("circle");
@@ -193,7 +195,7 @@ export default function MobileVersion({
               setServerSideChatHistory,
               clientSideChatHistory,
               setClientSideChatHistory,
-              setLoading,
+              setLoading
             );
           } else {
             console.error("No audio data recorded");
@@ -205,7 +207,7 @@ export default function MobileVersion({
         // Because mp4s are larger files, we need to record in chunks
         // The start() method of the MediaRecorder Interface starts recording
         // and pushes 1 second chunks to the audioChunksRef.current array
-        mediaRecorderRef.current.start(500); // Start recording with a timeslice of 1000ms (1 second)
+        mediaRecorderRef.current.start(100); // Start recording with a timeslice of 1ms
         console.log("Recording started");
       })
       .catch((e) => console.error("Error accessing microphone: ", e));
