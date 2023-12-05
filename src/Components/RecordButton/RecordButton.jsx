@@ -3,6 +3,7 @@ import "./RecordButton.css";
 import speechToText from "../../../Utilities/Speech-to-text-api";
 import { motion, useAnimation } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
+import startMediaRecording from "../../../Utilities/Media-recorder";
 
 // Framer variants
 const RED_COLOR = `#FF214D`;
@@ -89,6 +90,7 @@ export default function RecordButton({
   const [recording, setRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const videoChunksRef = useRef([]);
   const buttonRef = useRef(null);
 
   // Redux vars
