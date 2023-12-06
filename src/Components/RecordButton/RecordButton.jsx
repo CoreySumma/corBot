@@ -84,7 +84,7 @@ export default function RecordButton({
   loading,
   setLoading,
 }) {
-  // Request access to the microphone an video on component load
+  // Request access to the microphone an video on component mount
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: true })
@@ -207,9 +207,8 @@ export default function RecordButton({
     );
   };
 
-  // Function to stop recording on touch end
+  // Function to stop recording
   const stopRecording = () => {
-    // Check if mediaRecorderRef.current is not null and is recording
     console.log("entered stop recording");
     if (
       (audioRecorderRef.current &&
@@ -218,9 +217,9 @@ export default function RecordButton({
         videoRecorderRef === "recording") ||
       recording
     ) {
+      setRecording(false);
       audioRecorderRef.current.stop();
       videoRecorderRef.current.stop();
-      setRecording(false);
     }
   };
 

@@ -27,8 +27,8 @@ export default function startMediaRecording(
       // Grab two separate tracks from the stream
       const videoStream = new MediaStream([stream.getVideoTracks()[0]]);
       const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-
-      sendVideoToModel(videoStream);
+      // Analyze the video stream for facial expressions
+      sendVideoToModel(videoStream, recording);
 
       // Create a new ref.current for video and audio MediaRecorder for each stream
       videoRecorderRef.current = new MediaRecorder(videoStream, {

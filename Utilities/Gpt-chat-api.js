@@ -25,7 +25,6 @@ export default async function gptChatApi(
         },
       }
     );
-    console.log(serverSideChatHistory)
     setServerSideChatHistory((prevHistory) => [
       ...prevHistory,
       response.data.choices[0].message,
@@ -34,6 +33,7 @@ export default async function gptChatApi(
       ...prevHistory,
       response.data.choices[0].message,
     ]);
+    console.log(serverSideChatHistory)
     ttsApi(response.data.choices[0].message.content, setLoading, dispatch);
     return response.data.choices[0].message.content;
   } catch (error) {
