@@ -9,6 +9,7 @@ export default async function FaceAPI(videoStream, recording) {
     await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
 
     console.log("videoStream:", videoStream);
+    console.log("recording:", recording)
 
     // Create a new video element so we can analze the video
     // We need a physical video element to analyze it in real time
@@ -22,8 +23,9 @@ export default async function FaceAPI(videoStream, recording) {
 
     // Create options for the facial expression detection
     const options = new faceapi.TinyFaceDetectorOptions({
-      inputSize: 512,
-      scoreThreshold: 0.5,
+      inputSize: 608, // Smaller = faster, but less accurate
+      scoreThreshold: 0.8, // 0 - 1, the higher the number the more accurate, but less detections
+      maxResults: 3, // How many emotions to detect
     });
 
     // On play of the video, detect the facial expressiona and log them to the console
@@ -37,7 +39,9 @@ export default async function FaceAPI(videoStream, recording) {
           console.log(response.expressions); // Process expressions here
           // Implement your logic based on detected expressions
         }
-        // await faceapi.wait(1000);
+        // Cleanup the video element when we arent recording
+        // videoElement.srcObject = null;
+        // document.body.removeChild(videoElement);
       }
     };
 }

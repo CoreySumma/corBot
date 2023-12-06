@@ -3,6 +3,7 @@ import "./RecordButton.css";
 import { motion, useAnimation } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import startMediaRecording from "../../../Utilities/Media-recorder";
+import { updateRecordingState } from "../../actions";
 
 // Framer variants
 const RED_COLOR = `#FF214D`;
@@ -83,16 +84,17 @@ export default function RecordButton({
   setClientSideChatHistory,
   loading,
   setLoading,
+  recording,
+  setRecording,
 }) {
   // Request access to the microphone an video on component mount
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: true })
-  }, []);
+  }, []); 
 
   // Use refs because I'm nervous about losing state - values
   // persist between renders without triggering a re-render
-  const [recording, setRecording] = useState(false);
   const audioRecorderRef = useRef(null);
   const videoRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -100,7 +102,8 @@ export default function RecordButton({
   const buttonRef = useRef(null);
 
   // Redux vars
-  // const areWeLoading = useSelector((state) => state.loading);
+  const isRecording = useSelector((state) => state.stateData.recordingState);
+  console.log("isRecording", isRecording);
 
   // Redux
   const dispatch = useDispatch();
@@ -203,7 +206,7 @@ export default function RecordButton({
       clientSideChatHistory,
       setClientSideChatHistory,
       setLoading,
-      dispatch
+      dispatch,
     );
   };
 
@@ -211,13 +214,10 @@ export default function RecordButton({
   const stopRecording = () => {
     console.log("entered stop recording");
     if (
-      (audioRecorderRef.current &&
-        videoRecorderRef.current &&
-        audioRecorderRef.current.state === "recording" &&
-        videoRecorderRef === "recording") ||
-      recording
+      (recording && videoRecorderRef.current && audioRecorderRef.current)
     ) {
       setRecording(false);
+      console.log("recording stopped function", recording);
       audioRecorderRef.current.stop();
       videoRecorderRef.current.stop();
     }
@@ -255,7 +255,7 @@ export default function RecordButton({
     } else {
       stopRecording();
     }
-  }, [recording, videoRecorderRef, audioRecorderRef]);
+  }, [recording]);
 
   return (
     <div

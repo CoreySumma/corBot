@@ -1,10 +1,10 @@
-export const UPDATE_LOADING_RESPONSE = 'UPDATE_LOADING_RESPONSE';
+export const UPDATE_RECORDING_STATE = 'UPDATE_RECORDING_STATE';
 
 
 // Action Creators
-export const updateLoadingResponse = (loading) => {
+export const updateRecordingState = (recordingState) => {
   return {
-    type: UPDATE_LOADING_RESPONSE,
-    payload: loading,
+    type: UPDATE_RECORDING_STATE,
+    payload: recordingState,
   };
 };

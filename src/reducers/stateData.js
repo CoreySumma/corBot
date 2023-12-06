@@ -1,15 +1,15 @@
-import { UPDATE_LOADING_RESPONSE } from "../actions/index";
+import { UPDATE_RECORDING_STATE } from "../actions/index";
 
 const intializeState = {
-  loading: false,
+  recordingState: false,
 };
 
 const stateData = (state = intializeState, action) => {
   switch (action.type) {
-    case UPDATE_LOADING_RESPONSE:
+    case UPDATE_RECORDING_STATE:
       return {
         ...state,
-        loading: action.payload,
+        recordingState: action.payload,
       };
     default:
       return state;

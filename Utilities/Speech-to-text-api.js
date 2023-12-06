@@ -1,5 +1,4 @@
 import axios from "axios";
-import { updateLoadingResponse } from "../src/actions/index";
 
 export default async function speechToText(
   audioRecording,
@@ -24,8 +23,6 @@ export default async function speechToText(
   formData.append("model", "whisper-1");
   // Local State -- Probably wont even use this cause it is not working
   setLoading(true);
-  // Redux State (Universal)
-  dispatch((dispatch) => dispatch(updateLoadingResponse(true)));
 
   try {
     const response = await axios.post(

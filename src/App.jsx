@@ -16,10 +16,11 @@ export default function App() {
 
   const isDesktop = useMediaQuery({ minWidth: 601 });
 
-  // State for blob audio playback
+  // State audio playback
   const [audio, setAudio] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [blob, setBlob] = useState(null);
+  const [recording, setRecording] = useState(false);
 
   // State for loading animation
   const [loading, setLoading] = useState(false);
@@ -94,6 +95,8 @@ export default function App() {
             setClientSideChatHistory={setClientSideChatHistory}
             loading={loading}
             setLoading={setLoading}
+            recording={recording}
+            setRecording={setRecording}
           />
         </>
       ) : (
