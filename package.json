@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.2",
+    "face-api.js": "^0.22.2",
     "framer-motion": "^10.16.5",
     "html-react-parser": "^5.0.6",
     "openai": "^4.20.0",

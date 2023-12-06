@@ -84,15 +84,9 @@ export default function App() {
 
   return (
     <>
-      <h1>CorBot 2.0</h1>
+      <h1>CorBot 3.0</h1>
       {isDesktop ? (
         <>
-          {/* <ChatBox
-            serverSideChatHistory={serverSideChatHistory}
-            setServerSideChatHistory={setServerSideChatHistory}
-            clientSideChatHistory={clientSideChatHistory}
-            setClientSideChatHistory={setClientSideChatHistory}
-          /> */}
           <RecordButton
             serverSideChatHistory={serverSideChatHistory}
             setServerSideChatHistory={setServerSideChatHistory}

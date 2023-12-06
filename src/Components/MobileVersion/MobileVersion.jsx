@@ -96,12 +96,6 @@ export default function MobileVersion({
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
-      .then((stream) => {
-        setMediaStream(stream);
-        // You can set up the MediaRecorder here or keep it in startRecording
-        // For example: mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "audio/mp4" });
-      })
-      .catch((e) => console.error("Error accessing microphone: ", e));
   }, []);
 
   // useEffect for outer circle animation for touch(active)

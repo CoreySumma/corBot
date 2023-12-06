@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import "./RecordButton.css";
-import speechToText from "../../../Utilities/Speech-to-text-api";
 import { motion, useAnimation } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import startMediaRecording from "../../../Utilities/Media-recorder";
@@ -63,7 +62,7 @@ const innerCircleVariants = {
     borderRadius: "100%",
   },
   triangle: {
-    width: "80px",  // Adjust the size as needed
+    width: "80px", // Adjust the size as needed
     height: "80px", // Adjust the size as needed
     backgroundColor: `${RED_COLOR}`, // Set the color of your choice
     clipPath: "polygon(0% 0%, 100% 50%, 0% 100%)", // Points the triangle to the right
@@ -85,10 +84,17 @@ export default function RecordButton({
   loading,
   setLoading,
 }) {
-  // Use refs when we need to access a DOM node or React element from a function component
-  // or to persist a value between renders without triggering a re-render
+  // Request access to the microphone an video on component load
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+  }, []);
+
+  // Use refs because I'm nervous about losing state - values
+  // persist between renders without triggering a re-render
   const [recording, setRecording] = useState(false);
-  const mediaRecorderRef = useRef(null);
+  const audioRecorderRef = useRef(null);
+  const videoRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const videoChunksRef = useRef([]);
   const buttonRef = useRef(null);
@@ -175,7 +181,7 @@ export default function RecordButton({
     })();
   }, [loading, innerCircleAnimation, outerCircleAnimation]);
 
-  // if not loading or hover or clicked then set to circle
+  // If not loading or hover or clicked then set to circle
   useEffect(() => {
     if (!loading && !hover && !clicked) {
       innerCircleAnimation.start("circle");
@@ -183,55 +189,37 @@ export default function RecordButton({
     }
   }, [loading, hover, clicked, innerCircleAnimation, outerCircleAnimation]);
 
+  // Handler attached to function for media recording both video and audio
   const startRecording = () => {
-    if (recording) return; // If already recording, don't start again
-    setRecording(true);
-    // Get the user's microphone
-    navigator.mediaDevices
-      // The getUserMedia() method prompts the user for permission to use a media input which produces a MediaStream with tracks containing the requested types of media.
-      .getUserMedia({ audio: true })
-      // The then() method returns a Promise. It takes up to two arguments: callback functions for the success and failure cases of the Promise.
-      .then((stream) => {
-        mediaRecorderRef.current = new MediaRecorder(stream, {
-          mimeType: "audio/webm",
-        });
-        // The ondataavailable event handler is called when the MediaRecorder has gathered data available for consumption.
-        mediaRecorderRef.current.ondataavailable = (e) => {
-          // The push() method adds one or more elements to the end of an array and returns the new length of the array.
-          audioChunksRef.current.push(e.data);
-        };
-        // The onstop event handler is called when the recording is stopped either by calling MediaRecorder.stop() or when the requested timeslice has been reached.
-        mediaRecorderRef.current.onstop = () => {
-          const audioBlob = new Blob(audioChunksRef.current, {
-            type: "audio/webm",
-          });
-          // Call the speechToText function with the audioBlob and the chat history
-          speechToText(
-            audioBlob,
-            serverSideChatHistory,
-            setServerSideChatHistory,
-            clientSideChatHistory,
-            setClientSideChatHistory,
-            setLoading,
-            dispatch
-          );
-          audioChunksRef.current = [];
-        };
-        // Initialize the recorder to 'recording' state by calling start()
-        mediaRecorderRef.current.start();
-      })
-      .catch((e) => console.error(e));
+    startMediaRecording(
+      recording,
+      videoChunksRef,
+      audioChunksRef,
+      videoRecorderRef,
+      audioRecorderRef,
+      setRecording,
+      serverSideChatHistory,
+      setServerSideChatHistory,
+      clientSideChatHistory,
+      setClientSideChatHistory,
+      setLoading,
+      dispatch
+    );
   };
 
+  // Function to stop recording on touch end
   const stopRecording = () => {
     // Check if mediaRecorderRef.current is not null and is recording
     console.log("entered stop recording");
     if (
-      (mediaRecorderRef.current &&
-        mediaRecorderRef.current.state === "recording") ||
+      (audioRecorderRef.current &&
+        videoRecorderRef.current &&
+        audioRecorderRef.current.state === "recording" &&
+        videoRecorderRef === "recording") ||
       recording
     ) {
-      mediaRecorderRef.current.stop();
+      audioRecorderRef.current.stop();
+      videoRecorderRef.current.stop();
       setRecording(false);
     }
   };
@@ -250,6 +238,7 @@ export default function RecordButton({
     console.log("touch end");
   };
 
+  // I need to remove the events to stop chunk gathering form streams after recording
   useEffect(() => {
     const button = buttonRef.current;
     button.addEventListener("touchstart", handleTouchStart, false);
@@ -267,7 +256,7 @@ export default function RecordButton({
     } else {
       stopRecording();
     }
-  }, [recording, mediaRecorderRef]);
+  }, [recording, videoRecorderRef, audioRecorderRef]);
 
   return (
     <div

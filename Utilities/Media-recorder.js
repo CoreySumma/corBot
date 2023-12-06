@@ -1,6 +1,8 @@
 import speechToText from "./Speech-to-text-api";
+import sendVideoToModel from "./Face-api";
 
 export default function startMediaRecording(
+  recording,
   videoChunksRef,
   audioChunksRef,
   videoRecorderRef,
@@ -25,6 +27,8 @@ export default function startMediaRecording(
       // Grab two separate tracks from the stream
       const videoStream = new MediaStream([stream.getVideoTracks()[0]]);
       const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
+
+      sendVideoToModel(videoStream);
 
       // Create a new ref.current for video and audio MediaRecorder for each stream
       videoRecorderRef.current = new MediaRecorder(videoStream, {
@@ -68,9 +72,7 @@ export default function startMediaRecording(
         );
         // Reset the recording state
         audioChunksRef.current = [];
-      };
-        
-
+      };        
       // Start recording video and audio
       videoRecorderRef.current.start();
       audioRecorderRef.current.start();
