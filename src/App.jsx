@@ -35,6 +35,9 @@ export default function App() {
     isRecordingRef.current = isRecording;
   }, [isRecording]);
 
+  // Facial expression ref 
+  const facialExpressionRef = useRef([]);
+
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
     content:
