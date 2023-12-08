@@ -86,6 +86,8 @@ export default function RecordButton({
   setLoading,
   recording,
   setRecording,
+  isRecording,
+  isRecordingRef,
 }) {
   // Request access to the microphone an video on component mount
   useEffect(() => {
@@ -102,10 +104,10 @@ export default function RecordButton({
   const buttonRef = useRef(null);
 
   // Redux vars
-  const isRecording = useSelector((state) => state.stateData.recordingState);
+  // const isRecording = useSelector((state) => state.stateData.recordingState);
   console.log("isRecording", isRecording);
 
-  // Redux
+  // Redux vars to pass as args
   const dispatch = useDispatch();
 
   // Framer Motion states
@@ -207,6 +209,8 @@ export default function RecordButton({
       setClientSideChatHistory,
       setLoading,
       dispatch,
+      isRecording,
+      isRecordingRef,
     );
   };
 
@@ -214,12 +218,14 @@ export default function RecordButton({
   const stopRecording = () => {
     console.log("entered stop recording");
     if (
-      (recording && videoRecorderRef.current && audioRecorderRef.current)
+      (videoRecorderRef.current && audioRecorderRef.current)
     ) {
       setRecording(false);
+      dispatch(updateRecordingState(false));
       console.log("recording stopped function", recording);
       audioRecorderRef.current.stop();
       videoRecorderRef.current.stop();
+      console.log("video chunks", videoChunksRef.current);
     }
   };
 
@@ -250,12 +256,12 @@ export default function RecordButton({
   }, []);
 
   useEffect(() => {
-    if (recording) {
+    if (isRecording) {
       startRecording();
     } else {
       stopRecording();
     }
-  }, [recording]);
+  }, [isRecording]);
 
   return (
     <div

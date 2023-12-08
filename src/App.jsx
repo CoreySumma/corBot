@@ -27,6 +27,13 @@ export default function App() {
 
    // Redux
    const dispatch = useDispatch();
+   const isRecording = useSelector((state) => state.stateData.recordingState);
+
+   // Ref since I cant get this to work 
+   const isRecordingRef = useRef(isRecording);
+   useEffect(() => {
+    isRecordingRef.current = isRecording;
+  }, [isRecording]);
 
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
@@ -97,6 +104,8 @@ export default function App() {
             setLoading={setLoading}
             recording={recording}
             setRecording={setRecording}
+            isRecording={isRecording}
+            isRecordingRef={isRecordingRef}
           />
         </>
       ) : (

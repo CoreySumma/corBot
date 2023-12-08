@@ -1,5 +1,6 @@
 import speechToText from "./Speech-to-text-api";
 import sendVideoToModel from "./Face-api";
+import { updateRecordingState } from "../src/actions";
 
 export default function startMediaRecording(
   recording,
@@ -13,12 +14,15 @@ export default function startMediaRecording(
   clientSideChatHistory,
   setClientSideChatHistory,
   setLoading,
-  dispatch
+  dispatch,
+  isRecording,
+  isRecordingRef
 ) {
-  // If already recording, don't start again
-  if (recording) return; 
-  // Otherwise, set recording to true
+  if (isRecording) return; 
+  // Otherwise, set recording to true locally and through redux
   setRecording(true);
+  dispatch(updateRecordingState(true));
+  console.log("isRecording in start recording after starting", isRecording);
 
   navigator.mediaDevices
     // The getUserMedia() method prompts the user for permission to use video and audio media inputs.
@@ -28,7 +32,7 @@ export default function startMediaRecording(
       const videoStream = new MediaStream([stream.getVideoTracks()[0]]);
       const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
       // Analyze the video stream for facial expressions
-      sendVideoToModel(videoStream, recording);
+      sendVideoToModel(videoStream, recording, isRecordingRef);
 
       // Create a new ref.current for video and audio MediaRecorder for each stream
       videoRecorderRef.current = new MediaRecorder(videoStream, {

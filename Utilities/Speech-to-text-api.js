@@ -21,7 +21,7 @@ export default async function speechToText(
   const formData = new FormData();
   formData.append("file", audioRecording, "recording.mp3"); // 'recording.mp3' is the filename
   formData.append("model", "whisper-1");
-  // Local State -- Probably wont even use this cause it is not working
+  // Local State
   setLoading(true);
 
   try {

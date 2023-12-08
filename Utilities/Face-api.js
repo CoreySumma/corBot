@@ -1,7 +1,7 @@
 // Built on top of Tensor Flow - easy to use light weight library for facial expression recognition
 import * as faceapi from "face-api.js";
 
-export default async function FaceAPI(videoStream, recording) {
+export default async function FaceAPI(videoStream, recording, isRecordingRef) {
     console.log("FaceAPI enetered");
     // Load the models we need manuaslly from our file system (public/models)
     await faceapi.nets.faceExpressionNet.loadFromUri("/models");
@@ -24,14 +24,17 @@ export default async function FaceAPI(videoStream, recording) {
     // Create options for the facial expression detection
     const options = new faceapi.TinyFaceDetectorOptions({
       inputSize: 608, // Smaller = faster, but less accurate
-      scoreThreshold: 0.8, // 0 - 1, the higher the number the more accurate, but less detections
+      scoreThreshold: 0.7, // 0 - 1, the higher the number the more accurate, but less detections
       maxResults: 3, // How many emotions to detect
     });
 
+    console.log("======is recording var before entering the asunc function/loop:", isRecordingRef.current)
     // On play of the video, detect the facial expressiona and log them to the console
     videoElement.onloadedmetadata = async () => {
       // Start the analysis when the video stream is ready
-      while (!videoElement.paused && !videoElement.ended) {
+      // console.log("=======is recording var before loop:", isRecording)
+      while (!videoElement.paused && !videoElement.ended && isRecordingRef.current) {
+        // console.log("=======is recording var within loop:", isRecording)
         const response = await faceapi
           .detectSingleFace(videoElement, options)
           .withFaceExpressions();
