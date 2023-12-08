@@ -18,13 +18,13 @@ export default function analyzeFacials(expressionData) {
     }
   };
 
-  const getHighestEmtion = (emotionObj) => {
+  const getHighestEmotion = (emotionObj) => {
     // Start with a blank emotion and number
     let highestEmotion = "";
     let highestNumber = 0;
-    // loop through the emotionObj
+    // Loop through the emotionObj
     for (let emotion in emotionObj) {
-      // if the emotion is greater than the highest number (starting at 0)
+      // If the emotion is greater than the highest number (starting at 0)
       if (emotionObj[emotion] > highestNumber) {
         // Set the highest emotion to the current emotion or first emotion
         highestEmotion = emotion;
@@ -43,5 +43,6 @@ export default function analyzeFacials(expressionData) {
   }
   count++;
   getAverageEmotion(emotionObj);
-  return getHighestEmtion(emotionObj);
+  console.log(getHighestEmotion(emotionObj));
+  return getHighestEmotion(emotionObj);
 }

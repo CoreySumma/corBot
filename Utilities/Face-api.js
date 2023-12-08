@@ -1,5 +1,6 @@
 // Built on top of Tensor Flow - easy to use light weight library for facial expression recognition
 import * as faceapi from "face-api.js";
+import analyzeFacials from "./Analyze-facials";
 
 export default async function FaceAPI(videoStream, recording, isRecordingRef) {
     console.log("FaceAPI enetered");
@@ -41,6 +42,7 @@ export default async function FaceAPI(videoStream, recording, isRecordingRef) {
         if (response) {
           console.log(response.expressions); // Process expressions here
           // Implement your logic based on detected expressions
+          analyzeFacials(response.expressions);
         }
         // Cleanup the video element when we arent recording
         // videoElement.srcObject = null;
