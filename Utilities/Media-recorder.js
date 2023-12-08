@@ -16,7 +16,8 @@ export default function startMediaRecording(
   setLoading,
   dispatch,
   isRecording,
-  isRecordingRef
+  isRecordingRef,
+  facialExpressionRef,
 ) {
   if (isRecording) return; 
   // Otherwise, set recording to true locally and through redux
@@ -32,7 +33,7 @@ export default function startMediaRecording(
       const videoStream = new MediaStream([stream.getVideoTracks()[0]]);
       const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
       // Analyze the video stream for facial expressions
-      sendVideoToModel(videoStream, recording, isRecordingRef);
+      sendVideoToModel(videoStream, recording, isRecordingRef, facialExpressionRef);
 
       // Create a new ref.current for video and audio MediaRecorder for each stream
       videoRecorderRef.current = new MediaRecorder(videoStream, {

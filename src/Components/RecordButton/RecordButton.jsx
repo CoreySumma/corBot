@@ -88,6 +88,7 @@ export default function RecordButton({
   setRecording,
   isRecording,
   isRecordingRef,
+  facialExpressionRef,
 }) {
   // Request access to the microphone an video on component mount
   useEffect(() => {
@@ -105,7 +106,6 @@ export default function RecordButton({
 
   // Redux vars
   // const isRecording = useSelector((state) => state.stateData.recordingState);
-  console.log("isRecording", isRecording);
 
   // Redux vars to pass as args
   const dispatch = useDispatch();
@@ -211,6 +211,7 @@ export default function RecordButton({
       dispatch,
       isRecording,
       isRecordingRef,
+      facialExpressionRef,
     );
   };
 
@@ -225,9 +226,11 @@ export default function RecordButton({
       console.log("recording stopped function", recording);
       audioRecorderRef.current.stop();
       videoRecorderRef.current.stop();
-      console.log("video chunks", videoChunksRef.current);
     }
   };
+
+  // keeping these touch events because when dev tools is open its considered
+  // a touch and the these are triggered
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
@@ -255,6 +258,9 @@ export default function RecordButton({
     };
   }, []);
 
+
+  // useEffect to start and stop recording as a safeguard to function properly
+  // might not be needed?
   useEffect(() => {
     if (isRecording) {
       startRecording();
