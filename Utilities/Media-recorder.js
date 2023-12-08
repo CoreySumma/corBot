@@ -73,7 +73,8 @@ export default function startMediaRecording(
           clientSideChatHistory,
           setClientSideChatHistory,
           setLoading,
-          dispatch
+          dispatch,
+          facialExpressionRef
         );
         // Reset the recording state
         audioChunksRef.current = [];

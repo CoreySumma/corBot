@@ -7,13 +7,17 @@ export default async function speechToText(
   clientSideChatHistory,
   setClientSideChatHistory,
   setLoading,
-  dispatch
+  dispatch,
+  facialExpressionRef
 ) {
+
+  // Grab the current facial expression from the ref
+  let facialExpression = facialExpressionRef.current;
   // Helper function to handle server side chat history with user messages and call GPT after adding it
-  const addMessageToServerSideChatHistory = (message) => {
+  const addMessageToServerSideChatHistory = (message, facialExpression) => {
     setServerSideChatHistory((prevHistory) => [
       ...prevHistory,
-      { role: "user", content: message },
+      { role: "user", content: message + " Users Facial Expression: " + facialExpression},
     ]);
   };
 
@@ -35,7 +39,7 @@ export default async function speechToText(
         },
       }
     );
-    addMessageToServerSideChatHistory(response.data.text);
+    addMessageToServerSideChatHistory(response.data.text, facialExpression);
     return response.data;
   } catch (error) {
     console.error("Error in audio transcription request:", error);

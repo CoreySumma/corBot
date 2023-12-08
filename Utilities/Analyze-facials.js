@@ -12,7 +12,7 @@ export default function analyzeFacials(expressionData) {
   let count = 0;
 
   const getAverageEmotion = (emotionObj) => {
-    // divide each emotion by rhe count to get the average
+    // Divide each emotion by the count to get the average
     for (let emotion in emotionObj) {
       emotionObj[emotion] /= count;
     }
@@ -36,9 +36,9 @@ export default function analyzeFacials(expressionData) {
   }
 
   for (let emotion in expressionData) {
-    // grab the number for each emotion
+    // Grab the number for each emotion
     let number = expressionData[emotion];
-    // correlate the number to the emotion in our emotionObj
+    // Correlate the number to the emotion in our emotionObj
     emotionObj[emotion] += number;
   }
   count++;

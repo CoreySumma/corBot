@@ -2,6 +2,7 @@ import "./App.css";
 // import ChatBox from "./Components/Chat/ChatBox";
 import RecordButton from "./Components/RecordButton/RecordButton";
 import gptChatPrompt from "../Utilities/Gpt-chat-prompt";
+import gptChatPromptFacials from "../Utilities/Gpt-chat-prompt-facials";
 import gptChatApi from "../Utilities/Gpt-chat-api";
 import gptMobileChatApi from "../Utilities/Mobile/Gpt-chat-api-mobile";
 import checkScreenSize from "../Utilities/Check-screen-size";
@@ -35,8 +36,8 @@ export default function App() {
     isRecordingRef.current = isRecording;
   }, [isRecording]);
 
-  // Facial expression ref 
-  const facialExpressionRef = useRef("");
+  // Facial expression ref to pass to GPT prompt
+  const facialExpressionRef = useRef("You don't have data yet - so ignore this");
 
   // Intro message in chat box - customize it however you would like!
   const introMessage = {
@@ -46,7 +47,7 @@ export default function App() {
   };
   // Backend chat history that includes the prompt
   const [serverSideChatHistory, setServerSideChatHistory] =
-    useState(gptChatPrompt);
+    useState(gptChatPromptFacials);
   // Frontend chat history that does not includes the prompt
   const [clientSideChatHistory, setClientSideChatHistory] = useState([
     introMessage,
