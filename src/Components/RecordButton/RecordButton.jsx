@@ -198,7 +198,10 @@ export default function RecordButton({
   // Handler attached to function for media recording both video and audio
   const startRecording = () => {
     isRecordingRef.current = true;
+    // Make sure audioUrl is not null before stopping it to avoid error
+    if (audioUrl.current) {
     audioUrl.current.pause();
+    }
     startMediaRecording(
       recording,
       videoChunksRef,
