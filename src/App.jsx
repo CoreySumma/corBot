@@ -19,7 +19,7 @@ export default function App() {
 
   // State audio playback
   const [audio, setAudio] = useState(null);
-  const [audioUrl, setAudioUrl] = useState(null);
+  const audioUrl = useRef(null);
   const [blob, setBlob] = useState(null);
   const [recording, setRecording] = useState(false);
 
@@ -66,10 +66,12 @@ export default function App() {
         clientSideChatHistory,
         setClientSideChatHistory,
         setLoading,
-        dispatch
+        dispatch,
+        isRecordingRef,
+        audioUrl,
       );
     }
-  }, [serverSideChatHistory]);
+  }, [serverSideChatHistory, isRecordingRef]);
 // UseEffect to trigger mobile version of GPT chat API when the server-side chat history changes
   useEffect(() => {
     // Check if the last message was from the user
@@ -111,6 +113,7 @@ export default function App() {
             isRecording={isRecording}
             isRecordingRef={isRecordingRef}
             facialExpressionRef={facialExpressionRef}
+            audioUrl={audioUrl}
           />
         </>
       ) : (

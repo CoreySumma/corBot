@@ -52,11 +52,11 @@ export default async function FaceAPI(
         .detectSingleFace(videoElement, options)
         .withFaceExpressions();
       if (response) {
-        console.log(response.expressions); // Process expressions here
+        // console.log(response.expressions); 
         // Call the analyzeFacials function to determine the most dominant facial expression
         // and set the ref for the facial expression to be used in the chatbot
         facialExpressionRef.current = analyzeFacials(response.expressions);
-        console.log("facialExpressionRef.current:", facialExpressionRef.current);
+        // console.log("facialExpressionRef.current:", facialExpressionRef.current);
       }
       // Cleanup the video element when we arent recording
       // videoElement.srcObject = null;

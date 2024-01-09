@@ -19,11 +19,13 @@ export default function startMediaRecording(
   isRecordingRef,
   facialExpressionRef,
 ) {
+  // Don't record again if we are already recording
   if (isRecording) return; 
   // Otherwise, set recording to true locally and through redux
   setRecording(true);
+  isRecordingRef.current = true;
+  console.log("isRecordingRef in start recording", isRecordingRef.current)
   dispatch(updateRecordingState(true));
-  console.log("isRecording in start recording after starting", isRecording);
 
   navigator.mediaDevices
     // The getUserMedia() method prompts the user for permission to use video and audio media inputs.

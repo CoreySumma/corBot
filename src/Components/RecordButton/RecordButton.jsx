@@ -89,6 +89,7 @@ export default function RecordButton({
   isRecording,
   isRecordingRef,
   facialExpressionRef,
+  audioUrl,
 }) {
   // Request access to the microphone an video on component mount
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function RecordButton({
       .getUserMedia({ audio: true, video: true })
   }, []); 
 
-  // Use refs because I'm nervous about losing state - values
+  // Use refs because I'm nervous about losing state - values 
   // persist between renders without triggering a re-render
   const audioRecorderRef = useRef(null);
   const videoRecorderRef = useRef(null);
@@ -104,7 +105,7 @@ export default function RecordButton({
   const videoChunksRef = useRef([]);
   const buttonRef = useRef(null);
 
-  // Redux vars
+  // Redux vars - not using
   // const isRecording = useSelector((state) => state.stateData.recordingState);
 
   // Redux vars to pass as args
@@ -196,6 +197,8 @@ export default function RecordButton({
 
   // Handler attached to function for media recording both video and audio
   const startRecording = () => {
+    isRecordingRef.current = true;
+    audioUrl.current.pause();
     startMediaRecording(
       recording,
       videoChunksRef,
@@ -222,6 +225,7 @@ export default function RecordButton({
       (videoRecorderRef.current && audioRecorderRef.current)
     ) {
       setRecording(false);
+      isRecordingRef.current = false;
       dispatch(updateRecordingState(false));
       console.log("recording stopped function", recording);
       audioRecorderRef.current.stop();
