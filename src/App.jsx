@@ -87,7 +87,6 @@ export default function App() {
         audio,
         setAudio,
         audioUrl,
-        setAudioUrl,
         blob,
         setBlob,
         dispatch,
@@ -125,7 +124,6 @@ export default function App() {
           audio={audio}
           setAudio={setAudio}
           audioUrl={audioUrl}
-          setAudioUrl={setAudioUrl}
           blob={blob}
           setBlob={setBlob}
           loading={loading}

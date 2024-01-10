@@ -73,7 +73,6 @@ export default function MobileVersion({
   audio,
   setAudio,
   audioUrl,
-  setAudioUrl,
   blob,
   setBlob,
   dispatch,
@@ -94,8 +93,7 @@ export default function MobileVersion({
 
   // Request access to the microphone on component load
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia({ audio: true });
   }, []);
 
   // useEffect for outer circle animation for touch(active)
@@ -227,6 +225,7 @@ export default function MobileVersion({
   const handleTouchStart = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    audioUrl.current = null;
     setActive(true);
     startRecording();
     console.log("touch start");
@@ -267,19 +266,18 @@ export default function MobileVersion({
 
   // Logic for playing audio
   const handlePlay = () => {
-    if (audioUrl) {
-      let playAudio = new Audio(audioUrl);
-      playAudio.play();
-      setAudioUrl(null);
-    }
+    audioUrl.current.play()
+    audioUrl.current = null;
+    setAudio(null);
+    console.log("audioUrl.current in handle play function", audioUrl.current);
   };
 
   const outerCircleClass =
-    audioUrl !== null
+    audio !== null
       ? "play-button-outer-circle has-scale-animation"
       : "play-button-outer-circle";
   const outerCircleDelayedClass =
-    audioUrl !== null
+    audio !== null
       ? "play-button-outer-circle has-scale-animation has-delay-short"
       : "play-button-outer-circle";
 

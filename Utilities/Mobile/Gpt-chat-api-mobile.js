@@ -9,7 +9,6 @@ export default async function gptMobileChatApi(
   audio,
   setAudio,
   audioUrl,
-  setAudioUrl,
   blob,
   setBlob,
   loading,
@@ -42,7 +41,7 @@ export default async function gptMobileChatApi(
     console.log(serverSideChatHistory);
     const newMessage = response.data.choices[0].message.content;
     // Call Text to speech API with args
-    ttsmApi(newMessage, audio, setAudio, audioUrl, setAudioUrl, blob, setBlob, setLoading);
+    ttsmApi(newMessage, audio, setAudio, audioUrl, blob, setBlob, setLoading);
     return response.data.choices[0].message.content;
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);

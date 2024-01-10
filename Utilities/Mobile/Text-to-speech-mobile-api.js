@@ -5,7 +5,6 @@ export default async function ttsmApi(
   audio,
   setAudio,
   audioUrl,
-  setAudioUrl,
   blob,
   setBlob,
   setLoading
@@ -35,9 +34,10 @@ export default async function ttsmApi(
     let audio = new Audio(url);
     // Set state for audio, audioUrl, blob, and loading flag for frontend animation
     setAudio(audio);
-    setAudioUrl(url);
+    audioUrl.current = audio;
     setBlob(blob);
     setLoading(false);
+
 
     // audio.play();
 
